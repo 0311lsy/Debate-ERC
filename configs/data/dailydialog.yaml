@@ -1,0 +1,6 @@
+# DailyDialog 域外泛化：标签已映射到 MELD 7 类口径（neutral/joyful/sadness/anger/surprise/disgust/fear）
+# 冻结迁移：模型在 MELD 训练，在 DailyDialog 上仅推理评估，不重新训练
+extends: ../base.yaml
+data:
+  dataset: dailydialog
+  raw_path: data/raw

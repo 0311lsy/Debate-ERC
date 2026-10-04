@@ -1,0 +1,6 @@
+# DailyDialog 域外泛化（critic 版）：Qwen2.5-7B backbone
+extends: ../base.yaml
+data:
+  dataset: dailydialog
+  raw_path: data/raw
+backbone: /home/lsy20252770/InstructERC/LLM_bases/Qwen2.5-7B

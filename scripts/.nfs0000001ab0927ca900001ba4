@@ -23,5 +23,9 @@ run 43 0.7
 run 44 0.7
 run 43 0.3
 run 44 0.3
-bash scripts/dailydialog_eval_queue.sh && echo "[queue] DailyDialog 完成" >> "$LOG"
 echo "########## SC 多 seed 队列全部完成 $(date '+%F %T') ##########" >> "$LOG"
+
+# ── M2(a) DailyDialog 域外冻结迁移评估（追加段）──
+echo "########## DailyDialog 域外迁移 $(date '+%F %T') ##########" >> "$LOG"
+bash scripts/dailydialog_eval_queue.sh >> "$LOG" 2>&1
+echo "[queue] DailyDialog 评估完成 $(date '+%F %T')" >> "$LOG"

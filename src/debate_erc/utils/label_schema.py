@@ -65,7 +65,7 @@ class LabelSchema:
 MELD_SCHEMA = LabelSchema(MELD_LABELS, "meld")
 IEMOCAP_SCHEMA = LabelSchema(IEMOCAP_LABELS, "iemocap")
 
-_SCHEMAS: dict[str, LabelSchema] = {"meld": MELD_SCHEMA, "iemocap": IEMOCAP_SCHEMA}
+_SCHEMAS: dict[str, LabelSchema] = {"meld": MELD_SCHEMA, "iemocap": IEMOCAP_SCHEMA, "dailydialog": MELD_SCHEMA}
 
 
 def get_schema(name: str) -> LabelSchema:

@@ -16,6 +16,9 @@ def load_split(dataset: str, raw_path: str, split: str, history_window: int = 5)
         return load_meld_split(raw_path, split, history_window)
     if dataset == "iemocap":
         return load_iemocap_split(raw_path, split, history_window)
+    if dataset == "dailydialog":
+        from .dailydialog_loader import load_dailydialog_split
+        return load_dailydialog_split(raw_path, split, history_window)
     raise ValueError(f"未知数据集: {dataset}")
 
 
