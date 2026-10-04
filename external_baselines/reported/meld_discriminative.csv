@@ -1,0 +1,11 @@
+method,year,venue,backbone,meld_weighted_f1,modality,source_id,notes
+DialogueRNN,2019,AAAI,BiLSTM+GRU (no pretrained LM),57.03,text,S1,"原论文 MELD 表；RoBERTa 前时代；后续论文转引有 57.95/58.73 等不同值（上下文窗口/特征口径差异），本表取原论文值"
+DialogueGCN,2019,EMNLP,GCN+GRU,58.10,text,S2,"原论文未直接在 MELD 评估；该值为后续 ERC 综述/EmoTrans 论文在统一 RoBERTa 文本口径下的转引值"
+DialogueCRN,2020,IJCAI,RoBERTa-base cognitive factors,58.38,text,S3,"原论文 MELD W-F1"
+DialogXL,2021,AAAI,RoBERTa-large+XLNet-style,62.41,text,S4,"原论文 MELD 主结果"
+DAG-ERC,2021,COLING,RoBERTa-large DAG,63.06,text,S5,"原论文 MELD 主结果"
+COSMIC,2022,Findings of ACL,RoBERTa-large+commonsense,65.24,text,S6,"RoBERTa-large+ATOMIC 口径；纯 RoBERTa 变体 64.23，区间 64.2–65.2"
+EmotionFlow-large,2022,NAACL,RoBERTa-large cascade,66.50,text,S7,"原论文 large 配置 MELD W-F1"
+SACL-LSTM,2023,ACL (findings track as cited),LSTM+symmetric contrastive,66.90,text,S8,"转引值；原报告为单 seed"
+HiDialog,2023,ACL,RoBERTa-large hierarchical,67.00,text,S9,"原论文 MELD W-F1"
+EmoTrans,2024,LREC-COLING,RoBERTa-large emotion transfer,68.00,text,S10,"原论文 MELD W-F1；判别式纯文本最前沿水位"

@@ -1,0 +1,6 @@
+method,year,venue,meld_weighted_f1,modalities,source_id,notes
+TelME,2023,ACM MM,66.70,"text+audio+video",S13,"多模态早期强基线；论文表格独立分块，不与纯文本方法排序比较"
+M2FNet,2023,IJCAI,67.40,"text+audio+video",S14,"多模态；模态口径不同"
+ELR-GNN,2024,2024 venue as cited,69.90,"text+audio+video",S15,"多模态"
+BiosERC,2024,2024 venue as cited,69.83,text+visual commonsense knowledge,S16,"引入外部生物/常识知识，非纯对话文本"
+DialogueLLM-7B,2024,arXiv 2310.11374v4,71.90,text+video knowledge instruction tuning,S17,"使用视频情绪知识构造指令数据；LoRA 7B；多模态知识增强，MELD 全局高位"

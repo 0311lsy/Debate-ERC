@@ -1,0 +1,7 @@
+method,year,venue,base_model,meld_weighted_f1,modality,source_id,status,notes
+InstructERC,2024,COLING (arXiv v6),LLaMA2-7B LoRA,69.15,text,S11,reported,"检索增强对话历史+多任务对齐；与本文同基座同数据集，是唯一复现对象（见 ../instructerc_reproduction/）"
+CKERC,2024,2024 venue as cited,7B-class LLM,69.27,text,S12,reported,"常识知识增强 ERC；开源情况待核，若无可用代码则维持 reported"
+Debate-ERC base (ours),2026,this work,LLaMA2-7B LoRA plain SFT,68.88,text,this_work,reproduced_8seed,"8-seed 均值 68.88±0.41；刻意朴素 SFT（无检索/无多任务/无外部知识）"
+Debate-ERC gated review (ours),2026,this work,LLaMA2-7B + Qwen2.5-7B verifier,69.37,text,this_work,reproduced_8seed,"8-seed 均值 69.37±0.39；期望成本 1.27x forward passes；配对 t p=0.019"
+InstructERC reproduced (ours),2026,this work,LLaMA2-7B LoRA (InstructERC protocol),TBD,text,this_work,reproduction_pending,"统一框架下复现值，多 seed；产出后填入并与 reported 69.15 并列展示"
+InstructERC + gated review (ours),2026,this work,InstructERC proponent + Qwen2.5-7B verifier,TBD,text,this_work,experiment_pending,"门控可叠加性实验：验证部署期增量能否叠在更强 proponent 上"
