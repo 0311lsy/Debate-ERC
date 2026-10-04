@@ -39,3 +39,9 @@ $PY -u scripts/eval_logprob.py \
   || echo "[queue] critic logprob FAILED $(date '+%T')" >> "$LOG"
 
 echo "[queue] DailyDialog 评估全部完成 $(date '+%F %T')" >> "$LOG"
+
+# ── DailyDialog 结果聚合与文档回填（后处理）──
+echo "########## DailyDialog 聚合 $(date '+%F %T') ##########" >> "$LOG"
+$PY -u scripts/dailydialog_aggregate.py > outputs/dailydialog/aggregate.log 2>&1 \
+  && echo "[queue] DailyDialog 聚合完成 $(date '+%T')" >> "$LOG" \
+  || echo "[queue] DailyDialog 聚合 FAILED $(date '+%T')" >> "$LOG"
