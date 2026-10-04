@@ -1,0 +1,26 @@
+{
+  "m0_sft": {
+    "wf1": 0.7913146583032642,
+    "macro_f1": 0.4378593042546372,
+    "accuracy": 0.7643410852713178,
+    "per_class_f1": {
+      "neutral": 0.8571,
+      "joyful": 0.5576,
+      "sadness": 0.261,
+      "anger": 0.4416,
+      "surprise": 0.3556,
+      "disgust": 0.289,
+      "fear": 0.303
+    },
+    "pred_distribution": {
+      "neutral": 5591,
+      "joyful": 925,
+      "surprise": 407,
+      "anger": 190,
+      "sadness": 419,
+      "fear": 82,
+      "disgust": 126
+    },
+    "elapsed_sec": 1465.2
+  }
+}

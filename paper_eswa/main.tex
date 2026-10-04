@@ -320,12 +320,17 @@ model with a near-zero gain, consistent with a diminishing-returns ceiling.
 
 \paragraph{Position relative to published systems.}
 Table~\ref{tab:position} places our numbers against reported MELD results.
-We make no state-of-the-art claim: recent text-only systems reach 69.1--69.3
+We make no state-of-the-art claim: recent text-only systems report 69.1--69.3
 and multimodal systems 69.8--71.9. Our plain-SFT primary model
-(68.88$\pm$0.41) already sits at the level of recent 7B generative systems,
-and gated review enters the 69.3+ band at $1.27\times$ expected cost. The
-claim is an \emph{orthogonal deployment-time mechanism} that can wrap any
-stronger primary model, not a stronger single classifier.
+(68.88$\pm$0.41) sits at the level of these reported 7B generative systems,
+and gated review enters the 69.3+ band at $1.27\times$ expected cost. As
+detailed in the table footnote, the strongest reported text-only figure
+(InstructERC 69.15) relies on a training entry point absent from its public
+repository, and its released pipeline reproduces at 66.29 in our hands; our
+positioning therefore rests on reported water levels plus our own paired
+multi-seed numbers, not on cross-implementation significance. The claim is
+an \emph{orthogonal deployment-time mechanism} that can wrap any stronger
+primary model, not a stronger single classifier.
 
 \begin{table*}[t]
 \centering
@@ -350,8 +355,9 @@ Discriminative & EmotionFlow-large \citep{song2022emotionflow} & 2022 & 66.5 \
 Discriminative & SACL-LSTM$^{\dagger}$ \citep{ji2023sacl} & 2023 & 66.9 \
 Discriminative & HiDialog \citep{liu2023hidialog} & 2023 & 67.0 \
 Discriminative & EmoTrans (RoBERTa-large) \citep{jian2024emotrans} & 2024 & 68.0 \
-Generative 7B & InstructERC \citep{lei2023instructerc} & 2024 & 69.15 \
-Generative LLM & CKERC$^{\ddagger}$ & 2024 & 69.27 \
+Generative 7B & InstructERC$^{\S}$ \citep{lei2023instructerc} & 2024 & 69.15 \\
+Generative 7B & \quad InstructERC, released pipeline reproduced by us & 2026 & 66.29 \\
+Generative LLM & CKERC$^{\ddagger}$ & 2024 & 69.27 \\
 \textbf{This work} & \textbf{Primary SFT, 8-seed mean} & --- &
 \textbf{68.88$\pm$0.41} \
 \textbf{This work} & \textbf{Gated review, 8-seed mean ($1.27\times$ cost)} & --- &
@@ -368,8 +374,14 @@ Multimodal & DialogueLLM-7B (video knowledge)
 
 \vspace{2pt}
 {\footnotesize $^{\dagger}$Reported for a single seed.
-$^{\ddagger}$As reported on arXiv (2403.07260, 2407.04279, 2407.00119);
-not reproduced in this work.}
+$^{\ddagger}$Not reproduced in this work; bibliography pending verification.
+$^{\S}$The 69.15 result uses the authors' unified-label training recipe
+(MELD+IEMOCAP+EmoryNLP mixed for 8 epochs) whose entry script
+(\texttt{main\_Unilabel.py}) is absent from the public repository
+(verified 2026-10-04). Under the only released pipeline (MELD-only,
+10-epoch LoRA, seed 42) we reproduce 66.29; the paired same-backbone
+anchor in this paper is therefore our own primary SFT (68.88), trained
+and evaluated under one unified protocol.}
 \end{table*}
 
 \paragraph{Calibration of the gating signal.}

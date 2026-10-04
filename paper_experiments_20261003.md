@@ -644,3 +644,10 @@ s43/s44 nohint 终审完成（tag `qwen7b_s43_nohint`/`qwen7b_s44_nohint`，固�
 2. 本文 base 68.88 即与 InstructERC 69.15 同水位（训练目标刻意保持朴素：纯 SFT、无检索/无多任务/无外部知识），门控以 +27% 期望成本进入 69.3+ 区间。
 3. 主张是**正交的部署期增量**：门控复审可叠加于任何更强单模型（包括 InstructERC 类 proponent），本文贡献是"何时调用异构复审"的机制与成本-精度刻画，不是更强的单模型。
 4. reported 数字非配对，论文表格显式标注 as-reported。
+
+### 26.1 InstructERC 复现审计与方案 B 决策（2026-10-04）
+
+- **历史复现**（2026-09-28，meld-only/10ep/seed42）：best W-F1 **66.29**（epoch 8，贪心、weighted 口径已核实），产物 `Agent_Reason/InstructERC/results/meld_lora_10epoch/`。
+- **协议审计**：论文 69.15 = unified-label Mixed 协议（三数据集统一标签混合 8 epoch，入口 `main_Unilabel.py`）；经 GitHub API 核对，该入口**官方未发布**（LIN-SHANG/InstructERC 的 code/ 仅 6 文件）。66.29 走的是已发布的单数据集 Plain 管线，两者协议不同，非复现失败。
+- **决策（方案 B）**：不投入自实现 unified 训练（18–30h GPU 且可被质疑）；Table 2 中 69.15 保留 as-reported，新增"released pipeline reproduced by us = 66.29"行与 §脚注说明官方代码缺口；配对锚点以自训 m0_sft 68.88（统一协议、8 seed）为准；措辞不做跨实现显著性声称。方案 A（自实现）留作 rebuttal 储备，原料（三个 pkl）与数据补丁脚本已就位（`external_baselines/instructerc_reproduction/`）。
+- 论文落点：main.tex Table 2（§标记行 + footnote）与 "Position relative to published systems" 段已改写。

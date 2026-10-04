@@ -1,0 +1,84 @@
+{
+  "m0_sft": {
+    "adapter": "outputs/runs/base_sft_s42/adapter_main/main",
+    "n": 7740,
+    "wf1": 0.8236073931450734,
+    "macro_f1": 0.46892822109453874,
+    "accuracy": 0.8316537467700258,
+    "wf1_logmean": 0.06133618381086803,
+    "macro_f1_logmean": 0.0683765170276712,
+    "accuracy_logmean": 0.05930232558139535,
+    "pred_agreement_sum_vs_mean": 0.0789405684754522,
+    "per_class_f1": {
+      "neutral": 0.9054,
+      "joyful": 0.4794,
+      "sadness": 0.2963,
+      "anger": 0.4949,
+      "surprise": 0.4642,
+      "disgust": 0.3179,
+      "fear": 0.3243
+    },
+    "pred_distribution": {
+      "neutral": 6612,
+      "joyful": 658,
+      "sadness": 33,
+      "anger": 80,
+      "surprise": 233,
+      "disgust": 104,
+      "fear": 20
+    },
+    "ece": 0.0251,
+    "mean_top1_conf": 0.8357,
+    "calibration": [
+      {
+        "range": "[0.2,0.3)",
+        "n": 13,
+        "mean_conf": 0.277,
+        "acc": 0.308
+      },
+      {
+        "range": "[0.3,0.4)",
+        "n": 114,
+        "mean_conf": 0.362,
+        "acc": 0.482
+      },
+      {
+        "range": "[0.4,0.5)",
+        "n": 278,
+        "mean_conf": 0.457,
+        "acc": 0.561
+      },
+      {
+        "range": "[0.5,0.6)",
+        "n": 484,
+        "mean_conf": 0.551,
+        "acc": 0.618
+      },
+      {
+        "range": "[0.6,0.7)",
+        "n": 517,
+        "mean_conf": 0.652,
+        "acc": 0.665
+      },
+      {
+        "range": "[0.7,0.8)",
+        "n": 808,
+        "mean_conf": 0.755,
+        "acc": 0.743
+      },
+      {
+        "range": "[0.8,0.9)",
+        "n": 1587,
+        "mean_conf": 0.859,
+        "acc": 0.839
+      },
+      {
+        "range": "[0.9,1.0)",
+        "n": 3939,
+        "mean_conf": 0.944,
+        "acc": 0.926
+      }
+    ],
+    "elapsed_sec": 1116.0
+  }
+}

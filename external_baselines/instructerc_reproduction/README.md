@@ -1,5 +1,10 @@
 # InstructERC 复现协议（统一框架下唯一复现的外部基线）
 
+> **决策状态（2026-10-04）：已采纳方案 B**——69.15 保留 as-reported，
+> 66.29 作为"官方已发布管线复现值"列入论文 Table 2 并附代码缺口说明；
+> 不启动自实现 unified 训练（方案 A 仅作 rebuttal 储备，原料与补丁已备）。
+> 论文落点：`paper_eswa/main.tex` Table 2（§脚注）+ Position 段。
+
 ## 为什么只复现这一个
 
 论文 Table 2 的定位主张"朴素 SFT base（68.88）与纯文本前沿 InstructERC
