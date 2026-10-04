@@ -1,0 +1,27 @@
+{
+  "title": "Debate-ERC: Selective Cross-Model Verification for Emotion Recognition in Conversations",
+  "description": "Code and artifacts for the ESWA submission on selective heterogeneous verification in conversational emotion recognition. Includes training/evaluation scripts, per-utterance prediction records for 8 seeds, and the LaTeX paper source.",
+  "creators": [
+    {
+      "name": "Anonymous",
+      "affiliation": "Anonymous Institution"
+    }
+  ],
+  "keywords": [
+    "emotion recognition in conversation",
+    "large language models",
+    "selective prediction",
+    "model verification",
+    "cost-aware inference"
+  ],
+  "license": "MIT",
+  "upload_type": "software",
+  "access_right": "open",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/0311lsy/Debate-ERC",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
+}
