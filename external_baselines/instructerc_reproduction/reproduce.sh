@@ -1,61 +1,49 @@
 #!/usr/bin/env bash
-# InstructERC 官方协议复现队列（MELD, LLaMA2-7B, LoRA, seeds 42/43/44）
+# 方案 A 骨架（未经作者拍板前禁止执行训练部分）：
+# InstructERC unified-label 复现 = 数据准备（可先做）+ 自实现训练入口（尚不存在）
 #
-# 仅执行 P1（官方训练+评估）。P2（四元组转储适配器）需在 P1 完成后
-# 依据 main_new.py 的预测产物格式编写；P3（门控叠加）为纯 CPU 离线组合。
+# 背景见同目录 README.md：论文 69.15 所用入口 main_Unilabel.py 官方未发布；
+# 2026-09-28 的 meld-only 10ep 复现（66.29）协议错配，不能用于论文。
 #
 # 用法：
-#   bash external_baselines/instructerc_reproduction/reproduce.sh           # 立即跑（需 GPU 空闲）
-#   bash external_baselines/instructerc_reproduction/reproduce.sh --wait    # 等待当前 GPU 任务结束后再跑
+#   bash reproduce.sh prepare-data   # 仅生成 unified mixed 数据（CPU，可先验证）
+#   bash reproduce.sh train          # 训练（阻断：自实现入口未完成且方案未拍板）
 set -u
 
-IE_DIR=/home/lsy20252770/Agent_Reason/InstructERC
-CODE_DIR=${IE_DIR}/code
+IE_CODE=/home/lsy20252770/Agent_Reason/InstructERC/code
 PY=/home/lsy20252770/.conda/envs/instructerc/bin/python
-MODEL=/home/lsy20252770/InstructERC/LLM_bases/LLaMA2
-DATA=${IE_DIR}/data/processed/meld_window
-OUT_BASE=/home/lsy20252770/Agent_Reason/Debate-ERC/external_baselines/instructerc_reproduction/results
-LOG=/home/lsy20252770/Agent_Reason/Debate-ERC/outputs/instructerc_repro_queue.log
-SEEDS=(42 43 44)
+PKL_ROOT=/home/lsy20252770/InstructERC/original_data
+OUT_DATA=/home/lsy20252770/Agent_Reason/Debate-ERC/external_baselines/instructerc_reproduction/data/unified_label/mixed
+PATCHED=/home/lsy20252770/Agent_Reason/Debate-ERC/external_baselines/instructerc_reproduction/data_process_mixed_patched.py
 
-mkdir -p "$(dirname "$LOG")" "$OUT_BASE"
-
-# 可选：等待 GPU 上无 python 训练/推理进程后再启动（不抢占正在运行的实验）
-if [[ "${1:-}" == "--wait" ]]; then
-  echo "[repro] 等待 GPU 空闲 $(date '+%F %T')" | tee -a "$LOG"
-  while pgrep -f "self_consistency.py|eval_greedy.py|eval_logprob.py|train_critic_sft.py|main_new.py" >/dev/null; do
-    sleep 60
+prepare_data() {
+  # 前置检查：三个原始 pkl 必须齐全
+  for d in meld iemocap EmoryNLP; do
+    [[ -f "$PKL_ROOT/$d/$d.pkl" ]] || { echo "缺少 $PKL_ROOT/$d/$d.pkl"; exit 1; }
   done
-fi
+  # 生成补丁脚本：仅替换原作者两处硬编码路径，其余逻辑不动
+  mkdir -p "$(dirname "$PATCHED")" "$OUT_DATA"
+  sed -e "s#/mnt/dolphinfs/hdd_pool/docker/user/hadoop-aipnlp/leishanglin/LLMs_for_ERC/text_data#$PKL_ROOT#g" \
+      -e "s#/mnt/dolphinfs/hdd_pool/docker/user/hadoop-aipnlp/leishanglin/LLMs_for_ERC/data/unified_label#$(dirname "$OUT_DATA")#g" \
+      "$IE_CODE/data_process_mixed.py" > "$PATCHED"
+  echo "[prepare] 补丁脚本：$PATCHED"
+  cd "$IE_CODE" || exit 1
+  # mode=mixed, window=12, data_percent=1.0（README 配比表中 69.15 对应全量行）
+  "$PY" "$PATCHED" --mode mixed --historical_window 12 --data_percent 1.0
+  echo "[prepare] 完成，检查 $OUT_DATA/{train,valid,test}.json 的样本数与 id 前缀分布"
+}
 
-echo "[repro] 启动 InstructERC 3-seed 复现 $(date '+%F %T')" | tee -a "$LOG"
-
-cd "$CODE_DIR" || exit 1
-
-for S in "${SEEDS[@]}"; do
-  OUT=${OUT_BASE}/s${S}
-  echo "########## InstructERC seed=${S} $(date '+%T') ##########" >> "$LOG"
-  # 严格对齐官方 run_meld_lora.sh：1 epoch / lr2e-4 / bs16 / ga16 / maxlen1024
-  $PY -u main_new.py \
-    --dataset meld \
-    --model_name_or_path "$MODEL" \
-    --data_dir "$DATA" \
-    --output_dir "$OUT" \
-    --max_length 1024 \
-    --batch_size 16 \
-    --gradient_accumulation_steps 16 \
-    --eval_batch_size 8 \
-    --num_train_epochs 1 \
-    --lora True \
-    --learning_rate 2e-4 \
-    --seed "$S" \
-    --do_eval True \
-    --do_train True \
-    --statistic_mode True \
-    >> "$LOG" 2>&1 \
-    && echo "[repro] s${S} 完成 $(date '+%T')" >> "$LOG" \
-    || { echo "[repro] s${S} FAILED $(date '+%T')" >> "$LOG"; exit 1; }
-done
-
-echo "########## P1 全部完成 $(date '+%F %T') ##########" >> "$LOG"
-echo "[repro] 下一步：编写 P2 适配器（InstructERC 预测 → 四元组格式），随后 P3 门控叠加（纯 CPU）" >> "$LOG"
+case "${1:-}" in
+  prepare-data)
+    prepare_data
+    ;;
+  train)
+    echo "[blocked] 方案 A 未拍板，且自实现 unified 训练入口（main_Unilabel 等价物）尚未编写。"
+    echo "[blocked] 请先阅读 README.md 并在方案 A/B/C/D 中做出选择。"
+    exit 2
+    ;;
+  *)
+    echo "用法: bash reproduce.sh prepare-data | train"
+    exit 1
+    ;;
+esac

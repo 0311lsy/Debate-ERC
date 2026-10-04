@@ -1,5 +1,5 @@
 method,year,venue,base_model,meld_weighted_f1,modality,source_id,status,notes
-InstructERC,2024,COLING (arXiv v6),LLaMA2-7B LoRA,69.15,text,S11,reported,"检索增强对话历史+多任务对齐；与本文同基座同数据集，是唯一复现对象（见 ../instructerc_reproduction/）"
+InstructERC,2024,COLING (arXiv v6),LLaMA2-7B LoRA,69.15,text,S11,reported,"69.15=unified-label Mixed 协议（MELD+IEMOCAP+EmoryNLP 混合训练 8 epoch，入口 main_Unilabel.py）；该入口官方 GitHub 未发布（2026-10-04 核对）。本地按已发布单数据集管线复现为 66.29（meld-only 10ep，协议不同，见 ../instructerc_reproduction/README.md）"
 CKERC,2024,2024 venue as cited,7B-class LLM,69.27,text,S12,reported,"常识知识增强 ERC；开源情况待核，若无可用代码则维持 reported"
 Debate-ERC base (ours),2026,this work,LLaMA2-7B LoRA plain SFT,68.88,text,this_work,reproduced_8seed,"8-seed 均值 68.88±0.41；刻意朴素 SFT（无检索/无多任务/无外部知识）"
 Debate-ERC gated review (ours),2026,this work,LLaMA2-7B + Qwen2.5-7B verifier,69.37,text,this_work,reproduced_8seed,"8-seed 均值 69.37±0.39；期望成本 1.27x forward passes；配对 t p=0.019"
