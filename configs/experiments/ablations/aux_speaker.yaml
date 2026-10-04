@@ -1,0 +1,13 @@
+# 消融：speaker_task 替换 intensity 的对照（InstructERC 同款辅助对比）
+# intensity 关闭、speaker_task 开启 → run_id 标签 auxs（与 auxi 区分）
+extends: ../debate_erc_full.yaml
+name: aux_speaker
+aux_tasks:                        # 列表字段：extends 直接整体覆盖
+  - name: intensity
+    enabled: false
+  - name: speaker_task
+    enabled: true
+    lora_r: 32
+    lora_alpha: 64
+    loss_weight: 0.3
+    switch_steps: 100

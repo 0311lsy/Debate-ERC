@@ -1,0 +1,71 @@
+# 全局默认（单一事实来源，设计报告 3.1 / 5.5）
+# 所有实验配置 extends 本文件，只写 diff——天然保证消融组 LoRA 等不变量一致。
+name: base
+backbone: /home/lsy20252770/InstructERC/LLM_bases/LLaMA2  # NousResearch/Llama-2-7b-hf 本地权重
+output_dir: outputs/runs          # 相对项目根解析（home 持久目录，红线 #2 禁 /tmp）
+seeds: [42, 43, 44]
+smoke_samples: 0                  # >0 时每 split 仅跑前 N 条（冒烟测试）
+
+data:
+  dataset: meld
+  raw_path: /home/lsy20252770/Agent_Reason/PRC-Emo/data/raw
+  history_window: 5
+
+lora:                             # 主任务 LoRA（V3 5.3 统一口径）
+  r: 64
+  alpha: 128
+  dropout: 0.05
+  target_modules: [q_proj, v_proj]
+  enabled: true
+
+debate:
+  enabled: false
+  max_rounds: 3
+  confidence_threshold: 0.6
+  agent2: same                    # same | hetero
+
+reasoning:
+  enabled: false
+
+reask:                            # 依赖 debate（validate_config 强制）
+  enabled: false
+  max_reask: 2
+  mode: conclude                  # 仅 conclude 已实现（all/vote 校验拒绝）
+  low_confidence: 0.75            # 必须大于 debate.confidence_threshold
+
+fewshot:
+  synthesis_enabled: false
+  synthesis_ratio: 1.8
+  focal_loss_enabled: false
+  focal_gamma: 2.0
+  class_balanced: false
+
+routing:
+  enabled: false
+  oracle_mode: false
+  short_threshold: 60
+  long_threshold: 150
+  minority_boost: true
+
+training:
+  sft_enabled: true
+  epochs: 3
+  batch_size: 4
+  grad_accum: 8
+  lr: 2.0e-4
+  warmup_ratio: 0.03
+  dpo_enabled: false
+  dpo_beta: 0.1
+  dpo_epochs: 3
+  dpo_batch_size: 2
+  dpo_grad_accum: 16
+  dpo_lr: 5.0e-6
+  save_every_epoch: true
+  eval_every_steps: 0             # 0 = 关闭（避免默认开启拖慢训练）
+  max_steps: 0
+
+generation:
+  temperature: 0.7
+  top_p: 0.9
+  max_new_tokens: 200
+  do_sample: true

@@ -1,0 +1,26 @@
+You are Agent 2, the critic in an emotion recognition debate (ERC).
+
+Conversation (the target utterance is marked with [TARGET]):
+{{ dialogue }}
+
+Target utterance (spoken by {{ target_speaker }}): "{{ target_utterance }}"
+
+Agent 1 (the proponent) proposed the following causal chain:
+---
+{{ proposal }}
+---
+
+Your task: critically review the proposal for exactly these three types of defects:
+1. Trigger-emotion mismatch: does the stated trigger actually explain the proposed label?
+2. Ignored context shifts: did the proposal miss a turn or topic change that changes the emotion?
+3. Literal-vs-contextual contradiction: is the utterance ironic or sarcastic, i.e. does the literal
+   wording contradict the contextual meaning? (e.g. angry words delivered as playful teasing)
+
+Answer in EXACTLY this format:
+Critique:
+- <defect 1 or "none">
+- <defect 2 or "none">
+- <defect 3 or "none">
+Label: <your own emotion label from: {{ labels | join(", ") }}>
+Confidence: <a number between 0.0 and 1.0>
+Answer:

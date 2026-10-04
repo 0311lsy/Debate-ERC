@@ -1,0 +1,41 @@
+{
+  "dataset": "meld",
+  "splits": {
+    "train": {
+      "n": 9989,
+      "distribution": {
+        "neutral": 4710,
+        "joyful": 1743,
+        "sadness": 683,
+        "anger": 1109,
+        "surprise": 1205,
+        "disgust": 271,
+        "fear": 268
+      }
+    },
+    "dev": {
+      "n": 1109,
+      "distribution": {
+        "neutral": 470,
+        "joyful": 163,
+        "sadness": 111,
+        "anger": 153,
+        "surprise": 150,
+        "disgust": 22,
+        "fear": 40
+      }
+    },
+    "test": {
+      "n": 2610,
+      "distribution": {
+        "neutral": 1256,
+        "joyful": 402,
+        "sadness": 208,
+        "anger": 345,
+        "surprise": 281,
+        "disgust": 68,
+        "fear": 50
+      }
+    }
+  }
+}

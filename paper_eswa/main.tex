@@ -1,0 +1,657 @@
+%% ESWA (Expert Systems with Applications) 双栏投稿模板
+%% 官方 elsarticle 文档类，5p = 双栏期刊版式（ESWA 终版格式）
+%% 本地无 TeX 环境时，请在 Windows 侧 TeX Live 2025 或 Overleaf 编译
+\documentclass[final,5p,times,twocolumn]{elsarticle}
+
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{xcolor}
+
+\journal{Expert Systems with Applications}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Selective Cross-Model Verification for Emotion Recognition
+in Conversations: When and Why Heterogeneous Review Helps}
+
+%% 双盲投稿版本：作者与单位匿名（终稿恢复作者信息）
+\author[1]{Anonymous Author\corref{cor1}}
+\ead{anon@example.com}
+\cortext[cor1]{Corresponding author}
+\affiliation[1]{organization={Anonymous Institution}, city={City}, country={Country}}
+
+\begin{abstract}
+%% 初步填充：基于 8-seed 主结果与效率叙事
+Emotion recognition in conversation (ERC) with fine-tuned large language
+models (LLMs) has reached strong accuracy, yet errors concentrate on a
+hard-to-detect minority of utterances. We study whether a second,
+heterogeneous LLM can serve as a \emph{selective verifier} that is invoked
+only when the primary model is uncertain. On MELD (7-class) with eight
+independent seeds, gated heterogeneous review improves weighted-F1 by
+$+0.49 \pm 0.46$ percentage points (paired $t$: $p=0.019$; bootstrap 95\%
+CI $[+0.18, +0.77]$; Cohen's $d_z=1.07$) at an expected cost of only
+$1.27\times$ forward passes, while cheaper alternatives---self-consistency
+sampling at two temperatures ($-0.36$ to $-2.00$), homogeneous self-debate
+($-0.64$), and a weak 1.5B verifier ($-0.05$)---all fail. The gain replicates across verifier families
+(Qwen2.5-7B, Mistral-7B) and transfers zero-shot to IEMOCAP ($+1.21 \pm 0.42$,
+three seeds, paired $p{=}0.037$) using hyperparameters frozen on MELD. Controlled analysis shows the benefit
+is multiplicative in verifier independence and capability, and concentrates
+in the high-coverage regime where abstention is disallowed.
+\end{abstract}
+
+\begin{keyword}
+Emotion recognition in conversation \sep Large language models \sep
+Selective prediction \sep Model verification \sep Cost-aware inference
+\end{keyword}
+
+\end{frontmatter}
+
+\section{Introduction}
+\label{sec:intro}
+%% 动机段——ERC 错误集中于低置信少数样本（Fig.1 应用场景图，非架构图）
+Emotion recognition in conversation (ERC) is increasingly considered for
+high-volume applications such as contact-center quality inspection and
+affective monitoring (we treat these as illustrative deployment settings; our
+training corpora are scripted and acted transcripts, see
+Section~\ref{sec:limitations}), where errors on a small fraction of
+utterances---short, sarcastic, or context-dependent
+turns---carry disproportionate cost. Figure~\ref{fig:scenario} illustrates the
+operating point we target: a fine-tuned LLM labels each utterance online, and
+its own label-sequence posterior already identifies where errors concentrate
+(accuracy rises monotonically from 0.48 in the lowest confidence bucket to
+0.90 in the highest). The question is how to exploit this signal.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig_scenario.pdf}
+\caption{Application scenario. A primary LLM labels the conversation stream
+with calibrated confidences; only the low-confidence tail (27\% of traffic)
+is escalated to a heterogeneous reviewer, correcting errors such as sarcastic
+anger misread as joy at an expected cost of $1.27\times$ forward passes.}
+\label{fig:scenario}
+\end{figure}
+
+Our first finding is negative and constrains the design space: spending more
+compute on the \emph{same} model does not help. Homogeneous self-debate
+reduces weighted-F1 by 0.64 points---two copies of one model agree on
+91.3\% of utterances, including their mistakes---and self-consistency
+sampling at 3--5$\times$ budget degrades accuracy by 1.5--2.0 points. Errors
+of a fine-tuned 7B classifier are correlated blind spots, not random noise;
+decorrelating them requires parameter-level independence. This motivates a
+second finding: an independently trained reviewer of \emph{comparable}
+capability helps exactly when invoked selectively, while the same reviewer
+under a weaker gate or a weaker reviewer under the same gate both fail.
+%% 核心数字锚点：同构错误一致率 91.3\% vs 异构 79.9\%；oracle 上界 76.1
+
+\noindent\textbf{Contributions.}
+\begin{itemize}
+  \item A selective cross-model verification framework for ERC: a
+  confidence gate ($\tau$) routes uncertain utterances to an independently
+  trained heterogeneous reviewer, and a confidence-margin rule arbitrates
+  disagreements (Section~\ref{sec:method}).
+  \item A systematic control study showing that same-source extra
+  computation---self-debate, self-consistency, or a weak 1.5B
+  reviewer---is ineffective or harmful on ERC, and that review gain is
+  multiplicative in reviewer independence and capability
+  (Sections~5.1--5.2).
+  \item A cost--accuracy Pareto analysis ($1.27\times$ expected cost on the
+  frontier), a learned-arbiter bound showing the rule gate nearly exhausts
+  its feature family, and zero-tuning transfer to IEMOCAP
+  (Sections~5.3--5.4, 6).
+\end{itemize}
+
+\section{Related Work}
+\label{sec:related}
+\subsection{Emotion recognition in conversation}
+Early ERC systems encode conversational context explicitly: recurrent and
+memory models track speaker-specific states \citep{majumder2019dialoguernn},
+graph networks propagate affect over speaker and discourse relations
+\citep{ghosal2019dialoggcn,shen2021dag}, and hierarchical or
+common-sense-enhanced transformers model global--local context
+\citep{shen2021dialogxl,joshi2020cosmic,song2022emotionflow}. Contrastive and
+label-refinement objectives further improve robustness on imbalanced labels
+\citep{ji2023sacl,liu2023hidialog,jian2024emotrans}. The recent generative
+shift fine-tunes instruction-tuned LLMs with retrieval templates and
+emotion-alignment auxiliary tasks \citep{lei2023instructerc}, or augments
+them with external commonsense and multimodal emotion knowledge
+\citep{zhang2024dialoguellm}. These works improve the \emph{single}
+classifier; our question is orthogonal and deployment-centric: given a
+fine-tuned primary model, when should a second model be consulted, and what
+properties must the second model have? Any of the classifiers above can serve
+as the primary model in our framework, and we deliberately keep the primary
+training objective (plain supervised fine-tuning) free of retrieval, external
+knowledge, or multimodal signals, so that the review mechanism is evaluated
+without confounding it with a stronger base system.
+
+\subsection{LLM debate, verification, and self-consistency}
+Multi-agent debate lets several LLM instances criticize and revise open-ended
+generations, improving factuality on reasoning and QA tasks
+\citep{du2023debate}; self-consistency marginalizes over stochastic
+chain-of-thought samples \citep{wang2023selfconsistency}. Both mechanisms
+exploit diversity over long, open-ended outputs. We test whether the mechanism
+transfers to a setting where the output space is a single label token and a
+fine-tuned classifier's errors are systematic rather than random: our
+homogeneous self-debate and self-consistency controls (at two sampling
+temperatures) both degrade weighted-F1 (Section~5.2), indicating that the
+benefit of deliberation depends on \emph{parameter-level} error independence,
+which same-model sampling cannot provide. This also positions the work
+relative to LLM-as-a-verifier usage: a verifier helps only when its errors are
+decorrelated and its capability is matched, both of which we manipulate
+directly.
+\subsection{Model cascades and selective prediction}
+\label{sec:cascade}
+Model cascades \citep{chen2023frugalgpt,ong2024routellm} route queries to the cheapest model
+expected to answer correctly, solving $\arg\min \text{cost}$ subject to a
+quality constraint; selective prediction \citep{geifman2017selective,el2010foundations} trades
+coverage for risk on a \emph{single} model. Our setting differs in both
+objective and mechanism: we $\arg\max$ accuracy subject to a bounded cost
+($\leq 1.3\times$), and the second model is not a stronger fallback in a
+cascade but a \emph{comparable-capability, independently trained} verifier
+whose value comes from error decorrelation---a cascade from a weaker to a
+stronger model cannot reproduce the effect, since our reviewer alone is
+\emph{weaker} than the primary model (67.1 vs.\ 68.8) yet still helps.
+Conversely, escalation to a stronger reviewer would confound the gain with
+capability difference; our control ladder (Section~5.2) isolates exactly
+this factor.
+
+\section{Method}
+\label{sec:method}
+\subsection{Problem formulation}
+\label{sec:formulation}
+Let $C=((u_1,s_1),\ldots,(u_n,s_n))$ be a conversation with utterance text
+$u_i$ and speaker $s_i$, and let $\mathcal{L}$ be the fixed label set
+($|\mathcal{L}|{=}7$ on MELD, $4$ on IEMOCAP). The task is to assign a label
+$y_i\in\mathcal{L}$ to every utterance from its speaker-tagged dialogue
+history. A fine-tuned primary model $f_\theta$ maps the prompted history to a
+label by greedy decoding, $\hat y_a$, and additionally assigns a
+\emph{label-sequence posterior} $p_a(\ell)$ to every candidate label
+(Section~\ref{sec:scoring}). A second, independently trained model
+$g_\phi$ from a different model family produces $(\hat y_b,p_b)$ under the
+identical label set and prompt contract. Inference cost is measured in
+expected forward passes: one for $f_\theta$, plus $g_\phi$ only when
+invoked.
+
+\subsection{Confidence estimation and gated invocation}
+\label{sec:scoring}
+Labels are generated as short strings (e.g.,\ the token sequence
+``\texttt{\textvisiblespace neutral}''), so we teacher-force the full
+label token sequence and define
+$z_i(\ell)=\sum_{t}\log p_\theta(z_t\mid x,z_{<t})$,
+$p_a(\ell)=\exp z_i(\ell)/\sum_{\ell'\in\mathcal L}\exp z_i(\ell')$,
+using the label posterior $p_a=p_a(\hat y_a)$ as the confidence signal. The
+leading space token is included for both models: LLaMA2 tokenizes some labels
+with two tokens while Qwen2.5 uses one, and stripping the first token would
+break cross-model parity. We do not use this scalar as an estimated
+probability---Section~5.1 shows it is miscalibrated---but only as a
+\emph{ranking} signal for routing. Prompts are encoded without the
+tokenizer's truncation and left-truncated with the BOS retained, preserving
+the target utterance and most recent history; the full prompt templates and
+truncation implementation are released with the code.
+
+The gate invokes the reviewer only on the low-confidence tail, and a
+confidence-margin rule arbitrates disagreements (Algorithm~\ref{alg:gate}).
+The gate threshold $\tau$ and margin $m$ are calibrated once on the pooled
+development set and frozen for all test evaluation (Section~\ref{sec:setup}).
+
+\begin{algorithm}[t]
+\caption{Selective cross-model verification at test time}
+\label{alg:gate}
+\begin{algorithmic}[1]
+\Require prompt $x$, labels $\mathcal L$, gate $\tau$, margin $m$;
+primary $f_\theta$, reviewer $g_\phi$
+\State $(\hat y_a,p_a)\gets f_\theta(x)$ \Comment{greedy label + label posteriors}
+\If{$p_a\geq\tau$} \State \Return $\hat y_a$ \Comment{shortcut: no second
+model}
+\EndIf
+\State $(\hat y_b,p_b)\gets g_\phi(x)$
+\If{$\hat y_b\neq\hat y_a$ \textbf{and} $p_b>p_a+m$}
+  \State \Return $\hat y_b$ \Comment{selective flip}
+\Else \State \Return $\hat y_a$
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Heterogeneous reviewer with optional reasoning hint}
+The reviewer $g_\phi$ is a 7B model from a different family trained on the
+\emph{same} SFT data, prompt contract, and epoch budget, so that family---not
+training protocol---is the manipulated source of independence. Its
+classification prompt optionally appends a short self-check hint listing
+common ERC confusions (literal wording vs.\ contextual affect, rare-class
+degeneration). We treat the hint strictly as an ablatable component and make
+no claim of benefit from it: the multi-seed ablation is mixed
+(Section~\ref{sec:controls}), and the hint-free configuration is the simpler
+default.
+
+\section{Experimental Setup}
+\label{sec:setup}
+\paragraph{Datasets.}
+We use the official splits of two English conversational corpora
+(Table~\ref{tab:data}). MELD \citep{poria2019meld} contains multi-party
+TV-sitcom dialogues with seven emotions; IEMOCAP \citep{busso2008iemocap}
+contains two-speaker acted sessions, evaluated on four emotion classes under
+the standard mapping. Both are scripted or performed speech
+domains---implications for deployment-domain transfer are stated in
+Section~\ref{sec:limitations}. Only the text modality is used; MELD's audio
+and video streams are deliberately excluded so the mechanism is not
+confounded with multimodal cues.
+
+\begin{table}[t]
+\centering
+\caption{Dataset statistics (official splits; utterances).}
+\label{tab:data}
+\small
+\begin{tabular}{lcccc}
+\toprule
+Dataset & Train & Dev & Test & $|\mathcal L|$ \
+\midrule
+MELD & 9{,}989 & 1{,}109 & 2{,}610 & 7 \
+IEMOCAP & 5{,}163 & 647 & 1{,}623 & 4 \
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Models and training.}
+The primary model is LLaMA2-7B \citep{touvron2023llama2} with LoRA
+\citep{hu2022lora} (rank 32; 33.6M trainable parameters), and the main
+reviewer is Qwen2.5-7B \citep{qwen25} with LoRA rank 64 (LoRA $\alpha{=}128$,
+dropout 0.05, $q/v$-projections, learning rate $2\times10^{-4}$, effective
+batch size 32); a Mistral-7B \citep{jiang2023mistral} reviewer is trained
+under the same protocol as a second-family control. All models are
+fine-tuned for three epochs on identical SFT data with the same prompt
+contract. Inference is greedy decoding with $\max\_\text{new\_tokens}{=}8$
+for labels; confidence scoring uses teacher-forced label sequences as defined
+in Section~\ref{sec:scoring}.
+
+\paragraph{Calibration protocol.}
+The pair $(\tau,m)$ is selected by a single grid search over the
+\emph{pooled} development predictions of three seeds (3{,}327 MELD
+utterances), maximizing dev weighted-F1, yielding $\tau{=}0.65$, $m{=}0.05$.
+Test data participate in neither threshold selection nor prompt modification;
+all eight test seeds and the entire IEMOCAP evaluation use these frozen
+hyperparameters.
+
+\paragraph{Seeds, metrics, and hardware.}
+We report eight paired seeds (42--49) on MELD and three on IEMOCAP, varying
+initialization of both models. The primary metric is weighted-F1; we also
+report macro-F1 and accuracy. Statistical evidence uses the paired $t$-test,
+Wilcoxon signed-rank test, McNemar's test \citep{mcnemar1947note}, and a
+paired bootstrap over seeds (100k resamples). Two 7B models co-reside on one
+48\,GB GPU (37.5\,GB measured); joint inference takes 0.4--0.7\,s per
+utterance, and confidence scoring uses batch size 32.
+
+\section{Results}
+\label{sec:results}
+
+\subsection{Main result: eight-seed paired evaluation}
+\begin{table}[t]
+\centering
+\caption{Eight-seed main results on MELD test (weighted-F1, \%).}
+\label{tab:main}
+\begin{tabular}{lccc}
+\toprule
+Seed & Base & Ours & $\Delta$ \\
+\midrule
+42 & 68.60 & 69.63 & +1.04 \\
+43 & 68.97 & 68.70 & $-$0.27 \\
+44 & 68.76 & 69.66 & +0.90 \\
+45 & 69.14 & 69.57 & +0.43 \\
+46 & 68.83 & 69.38 & +0.56 \\
+47 & 69.78 & 69.68 & $-$0.10 \\
+48 & 68.35 & 69.09 & +0.74 \\
+49 & 68.61 & 69.25 & +0.65 \\
+\midrule
+Mean & 68.88 & 69.37 & \textbf{+0.49 $\pm$ 0.46} \\
+\bottomrule
+\end{tabular}
+\end{table}
+The paired mean gain is $+0.49\pm0.46$ weighted-F1 points (six positive,
+two negative seeds): paired $t{=}3.030$, $p{=}0.019$; paired bootstrap 95\%
+CI $[+0.18,+0.77]$; Wilcoxon $p{=}0.039$; Cohen's $d_z{=}1.07$. The result is
+not driven by the best seed---excluding seed 42 leaves $p{=}0.046$. We retain
+both negative seeds in all aggregates; seed 47 pairs the strongest primary
+model with a near-zero gain, consistent with a diminishing-returns ceiling.
+
+\paragraph{Position relative to published systems.}
+Table~\ref{tab:position} places our numbers against reported MELD results.
+We make no state-of-the-art claim: recent text-only systems reach 69.1--69.3
+and multimodal systems 69.8--71.9. Our plain-SFT primary model
+(68.88$\pm$0.41) already sits at the level of recent 7B generative systems,
+and gated review enters the 69.3+ band at $1.27\times$ expected cost. The
+claim is an \emph{orthogonal deployment-time mechanism} that can wrap any
+stronger primary model, not a stronger single classifier.
+
+\begin{table*}[t]
+\centering
+\caption{Position on MELD test (weighted-F1, \%). External values are
+\emph{as reported} by their papers under the official test split; they are
+\emph{not} paired reproductions (preprocessing, context windows, and seed
+counts differ), so no significance is attached to cross-row differences.
+Text-only and multimodal results are separated; only the text-only block is
+comparable in input modality.}
+\label{tab:position}
+\small
+\begin{tabular}{llcl}
+\toprule
+Paradigm & System & Year & W-F1 \
+\midrule
+Discriminative & DialogueRNN \citep{majumder2019dialoguernn} & 2019 & 57.0 \
+Discriminative & DialogueGCN \citep{ghosal2019dialoggcn} & 2019 & 58.1 \
+Discriminative & DialogXL \citep{shen2021dialogxl} & 2021 & 62.4 \
+Discriminative & DAG-ERC \citep{shen2021dag} & 2021 & 63.1 \
+Discriminative & COSMIC \citep{joshi2020cosmic} & 2022 & 64.2--65.2 \
+Discriminative & EmotionFlow-large \citep{song2022emotionflow} & 2022 & 66.5 \
+Discriminative & SACL-LSTM$^{\dagger}$ \citep{ji2023sacl} & 2023 & 66.9 \
+Discriminative & HiDialog \citep{liu2023hidialog} & 2023 & 67.0 \
+Discriminative & EmoTrans (RoBERTa-large) \citep{jian2024emotrans} & 2024 & 68.0 \
+Generative 7B & InstructERC \citep{lei2023instructerc} & 2024 & 69.15 \
+Generative LLM & CKERC$^{\ddagger}$ & 2024 & 69.27 \
+\textbf{This work} & \textbf{Primary SFT, 8-seed mean} & --- &
+\textbf{68.88$\pm$0.41} \
+\textbf{This work} & \textbf{Gated review, 8-seed mean ($1.27\times$ cost)} & --- &
+\textbf{69.37$\pm$0.39} \
+\midrule
+Multimodal & M2FNet & 2022 & 66.7 \
+Multimodal & TelME & 2024 & 67.4 \
+Multimodal & BiosERC$^{\ddagger}$ & 2024 & 69.83 \
+Multimodal & ELR-GNN$^{\ddagger}$ & 2024 & 69.9 \
+Multimodal & DialogueLLM-7B (video knowledge)
+\citep{zhang2024dialoguellm} & 2024 & 71.90 \
+\bottomrule
+\end{tabular}
+
+\vspace{2pt}
+{\footnotesize $^{\dagger}$Reported for a single seed.
+$^{\ddagger}$As reported on arXiv (2403.07260, 2407.04279, 2407.00119);
+not reproduced in this work.}
+\end{table*}
+
+\paragraph{Calibration of the gating signal.}
+Because the gate consumes $p_a$, we verify what the confidence can and
+cannot be trusted for. Both models are systematically overconfident
+(Figure~\ref{fig:calibration}): expected calibration error
+(ECE-15; \citealp{guo2017calibration}) is $0.097\pm0.006$ for the primary and $0.070\pm0.003$ for the
+reviewer over three seeds, with a confidence--accuracy gap of $+0.10$ and
+$+0.07$. Absolute confidences must therefore not be read as probabilities.
+The \emph{ranking}, however, is stable and useful: Spearman correlation
+between confidence and correctness is $0.440\pm0.006$ (and the risk--coverage
+analysis gives AURC 0.156 vs.\ 0.307 for random ranking, Section~5.5). An
+isotonic mapper fit on dev reduces test ECE to 0.025/0.019 while leaving the
+ranking virtually unchanged, so the gate is robust to the calibration error:
+it ranks, rather than interprets, the scalar.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig_calibration.pdf}
+\caption{Reliability diagrams (seed 42). Both models are overconfident, but
+confidence still orders utterances by correctness (Spearman $\approx0.44$);
+the gate uses the ranking, not the absolute values.}
+\label{fig:calibration}
+\end{figure}
+
+\subsection{Cheaper alternatives all fail, and the reasoning hint is not
+essential}
+\label{sec:controls}
+We hold the primary model and test set fixed and compare against cheaper or
+structurally similar alternatives.
+\emph{Homogeneous self-debate} (a second LLaMA2-7B copy as reviewer) changes
+weighted-F1 by $-0.64$: the two copies agree on 91.3\% of utterances,
+including their mistakes, so extra compute reproduces rather than corrects
+the errors. \emph{Self-consistency} sampling of the primary model
+(top-$p$ 0.9, majority vote of 3/5 samples, ties broken by label posteriors)
+degrades weighted-F1 at $3$--$5\times$ forward-pass budget at both
+temperatures: $-2.00$/$-1.55$ at $T{=}0.7$ and $-0.65$/$-0.36$ at
+$T{=}0.3$. Lower temperature halves the damage---part of the high-temperature
+loss is sampling noise---but the best SC variant (68.24 at $5\times$ cost)
+still underperforms greedy decoding (68.60 at $1\times$) and falls 1.39
+points short of gated review (69.63 at $1.27\times$). The failure is
+structural rather than temperature-driven: same-parameter samples share the
+classifier's correlated blind spots on a short-label task. A \emph{weak 1.5B reviewer} has genuine
+independence (56.1\% agreement) but no parity in capability (it degenerates
+to a majority-class predictor, W-F1 0.486), and yields $-0.05$. Finally,
+\emph{full-cost ensembles} at 100\% reviewer invocation reach 69.37
+(confidence-pick) and 69.51 (flip on every disagreement), versus our gated
+69.33 at 26.7\% invocation: four times the review budget buys at most 0.18
+points. Together these controls show the gain requires reviewer independence
+\emph{and} capability parity \emph{and} selective invocation jointly.
+
+\paragraph{Ablation: reasoning hint (mixed result reported).}
+The reviewer prompt optionally includes a short self-check hint. Removing it
+on the same adapters gives $+0.84$, $+0.59$, $+0.73$ across seeds 42--44
+(mean $+0.72 \pm 0.13$, all positive, $p{=}0.010$), versus $+1.04$, $-0.27$,
+$+0.90$ with the hint (mean $+0.56 \pm 0.72$). The hint helps marginally in
+two seeds but materially hurts in seed 43 ($-0.85$); its average effect is
+not distinguishable from zero and slightly below the hint-free variant. We
+therefore make no claim that the hint contributes: the architecture
+(gating plus heterogeneous review) carries the gain, and the hint-free
+configuration is arguably the safer deployment choice. We report this
+negative component result explicitly rather than suppressing it.
+
+\subsection{Cross-family and cross-dataset generalization}
+\label{sec:generalization}
+\paragraph{Second reviewer family (preliminary evidence).}
+A Mistral-7B reviewer trained under the identical protocol replicates the
+direction of the gain ($+0.29$), smaller than Qwen2.5-7B ($+1.01$). We report
+this as single-seed, preliminary evidence rather than a settled claim, for
+two reasons: (i) Mistral shares the LLaMA architectural lineage, so its
+independence from the LLaMA2 primary is plausibly weaker; (ii) its standalone
+accuracy is also lower (68.25 vs.\ 69.16), confounding independence with
+capability. Disentangling the two requires a factorial sweep over
+(capability-matched, independence-varied) reviewer pairs, which we leave to
+future work; the claim we make here is only that the gain direction is not a
+Qwen-specific artifact.
+\paragraph{Cross-dataset transfer.}
+On IEMOCAP (4-class), the same framework with hyperparameters frozen from
+MELD ($\tau{=}0.65$, margin $0.05$, zero test-time tuning) improves
+weighted-F1 by $+1.21 \pm 0.42$ points across three seeds (80.16 $\to$ 81.37;
+$+0.92$, $+1.69$, $+1.02$; all three positive; paired $t$, $p{=}0.037$),
+larger than IEMOCAP's own dev-calibrated variant ($+0.40 \pm 0.05$,
+$p{=}0.005$). The frozen gate is better precisely because it is estimated
+from $3\times$1109 MELD dev utterances, whereas per-seed IEMOCAP calibration
+on only 647 dev utterances is noisy---two of three seeds select gates with a
+2--3\% trigger rate that leave most gains unexploited. Reviewer routing
+transfers as well: within the triggered bucket (13.6\% of utterances),
+primary-model accuracy is only 49.6\% and review lifts it to 56.5\%,
+mirroring the MELD mechanism.
+
+\subsection{Cost--accuracy Pareto}
+%% Fig.2：tau 扫描 0.4--0.9 构成前沿，tau=0.65 居峰（1.26x, 69.64）
+%% oracle 75.53 标示仲裁规则 6+ 点开采空间
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig_pareto.pdf}
+\caption{Cost--accuracy Pareto on MELD test (seed 42). Sweeping the gate
+$\tau$ traces the frontier; $\tau{=}0.65$ sits on it at $1.26\times$ expected
+cost. Full-review strategies ($2\times$) and self-consistency ($3$--$5\times$)
+are dominated. The oracle marks the remaining arbitration gap bounded in
+Section~6.2.}
+\label{fig:pareto}
+\end{figure}
+
+\subsection{Interaction with abstention}
+%% Fig.3 risk-coverage：AURC 差值未显著（CI 跨 0），增益集中高覆盖区
+%% 91\% rescue 落在最低 20\% 弃权带——诚实边界
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig_risk_coverage.pdf}
+\caption{Risk--coverage with an abstention option (seed 42). The review
+gain concentrates in the high-coverage regime (inset) where abstention is
+disallowed; the AURC difference is not significant (CI crosses zero), so we
+report the review step as a high-coverage correction mechanism, not a
+substitute for abstention.}
+\label{fig:riskcoverage}
+\end{figure}
+
+\subsection{Case study}
+\label{sec:cases}
+Table~\ref{tab:cases} shows three representative flips under the deployed
+rule ($\tau{=}0.65$, margin $0.05$). In R1 the reviewer separates
+physiological disgust from the angry wording that misled the primary model,
+mirroring the cleanest per-class gain (disgust, rescue/harm $=15/2$). In R2
+both models are unconfident ($p_a{=}0.32$), but escalation separates a
+resigned sadness from literal neutrality. R3 captures suppressed annoyance
+behind a suggestion-form sentence. H1 is the failure mode we report openly:
+polite-but-distant phrasing is read as anger by the reviewer, and the margin
+rule fails to block the flip. The fear pair (F1/F2) shows both directions on
+a 50-instance class: a one-word cry for help is rescued, while panicked
+repetition about a lost heirloom is misread as anger with high reviewer
+confidence---evidence for routing very-low-confidence minority classes to
+abstention rather than forced arbitration.
+
+\begin{table}[t]
+\centering
+\caption{Case study on MELD test (seed 42). \textbf{Bold}: target utterance.}
+\label{tab:cases}
+\scriptsize
+\begin{tabular}{@{}p{0.06\linewidth}p{0.60\linewidth}p{0.28\linewidth}@{}}
+\toprule
+ID & Context $\rightarrow$ target & gold / primary / reviewer \\
+\midrule
+R1 & \dots ``Ill fire him today and you go out with him for another week.''
+$\rightarrow$ \textbf{``Are you kidding?! Another week with that sip, Ill
+kill''} & disgust / anger (.55) / \textbf{disgust (.86)} \checkmark \\
+R2 & \dots ``Then why are you smoking?'' $\rightarrow$ \textbf{``Well its
+very unsettling.''} & sadness / neutral (.32) / \textbf{sadness (.38)}
+\checkmark \\
+R3 & \dots (sarcastic tip remark) $\rightarrow$ \textbf{``would you just see
+my chiropractor, already.''} & anger / neutral (.53) / \textbf{anger (.62)}
+\checkmark \\
+\midrule
+H1 & \dots ``could you pass the cheese?'' $\rightarrow$ \textbf{``Listen uh,
+Id prefer it if you didnt call me Joey.''} & neutral / \textbf{neutral (.59)}
+/ anger (.68) $\times$ \\
+\midrule
+F1 & \dots ``The charitys on fire!'' $\rightarrow$ \textbf{``Help!''} &
+fear / anger (.64) / \textbf{fear (.81)} \checkmark \\
+F2 & \dots ``which one of you guys is Gunther\dots'' $\rightarrow$
+\textbf{``Wheres my ring? My dead grandmothers wedding ring?''} & fear /
+\textbf{fear (.55)} / anger (.83) $\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Discussion}
+\label{sec:discussion}
+%% M1 错误系统性相关；M2 增益=独立性x能力；M3 错误可路由；
+%% M5 天花板效应；Limitations 主动写满
+
+\subsection{Mechanism: why heterogeneous review works}
+\label{sec:mechanism}
+Three evidence-backed findings explain the gain. First, errors of one
+fine-tuned model are systematically correlated with themselves but partially
+decorrelated across families: two LLaMA2 copies agree on 91.3\% of
+utterances---including their mistakes---while the heterogeneous pair agrees on
+79.9\%, which is exactly the slack a verifier can exploit. Second, independence
+and capability are jointly necessary rather than alternatives: the $3\times3$
+proponent--reviewer factorial is positive in 8 of 9 cells, all six
+off-diagonal pairings are positive, and the sole negative cell pairs the
+weakest proponent with the weakest reviewer; a 1.5B reviewer with high
+independence but no capability yields nothing (Section~5.2). Third, the errors
+that can be corrected are \emph{routable}: the primary model's confidence
+orders them (Section~5.1), and rescues concentrate on mid-frequency confusable
+classes (disgust rescue/harm $=15/2$, anger $49/14$) rather than on the rarest
+classes, where both models fail. The ceiling observation complements this
+picture---the strongest primary seed gains approximately zero---so expected
+value is largest for ordinary, non-saturated base classifiers.
+
+\subsection{Application value in deployment scenarios}
+As an illustrative projection---not measured on industrial data---consider a contact center processing $10^5$ utterances per day. The
+eight-seed mean improvement of $+0.49$pp weighted-F1 (accuracy $+0.53$pp)
+corresponds to roughly 500 fewer mislabeled utterances per day
+($\approx$15{,}000 per month)---mislabeled anger in a complaint call routes
+to the wrong handling queue, so under this illustrative traffic assumption
+the reduction would translate into rerouting cost; empirical industrial
+validation is left to future work. The price is a $1.27\times$ expected forward-pass budget:
+two 7B models fit on a single 48\,GB GPU (37.5\,GB measured), and 73\% of
+traffic is answered by the primary model alone. In affective-monitoring
+settings where missed \emph{fear} signals carry safety consequences, our
+per-class analysis advises the opposite of blind trust: flips on fear are
+unreliable (rescue/harm $=2/8$), and the third branch of the
+framework---abstention to human review at very low confidence---is the
+appropriate handling, not forced arbitration (Section~5.5).
+
+\subsection{Why not a learned arbiter? Bounding the oracle gap}
+The oracle that picks the better of the two answers reaches 75.53, about six
+points above our rule gate (69.63). We probed this gap with a logistic
+arbiter trained on dev disagreements (223 examples; features: both
+confidences, their difference, low-confidence indicator, per-class priors)
+and evaluated once on test. The learned arbiter at its best threshold
+matches but does not exceed the rule gate (69.65 vs.\ 69.63), because the
+disagreement pool is intrinsically noisy: the reviewer is correct in only
+33.6\% of disagreements (179 potential rescues vs.\ 208 potential harms),
+and 27\% of disagreements are both-wrong cases that no binary arbiter can
+exploit. The remaining oracle gap is therefore primarily a signal-to-noise
+constraint of the reviewer pair, not a deficiency of the arbitration rule;
+closing it requires either a third branch (abstention) or stronger base
+models rather than a cleverer gate.
+
+\subsection{Limitations}
+(i) \emph{Fear-class flips are unreliable} (2 rescues vs.\ 8 harms on 50
+test instances); high-stakes minority classes should be routed to the
+abstention branch. (ii) The Mistral replication confounds independence with
+capability (Section~5.3); a factorial (capability $\times$ independence)
+sweep is future work. (iii) Self-consistency was tested at both $T{=}0.7$
+and $T{=}0.3$ and is negative at both; the remaining untested point is
+near-greedy temperature $T{\to}0$, where sampling collapses toward greedy
+decoding and SC can add nothing by construction.
+(iv) The Mistral replication and the self-consistency controls are
+single-seed (the IEMOCAP transfer and hint ablation are now three-seed);
+multi-seed extension of the remaining single-run controls is future work.
+(v) \emph{Application-domain gap}: both training corpora are scripted or
+performed English speech (TV sitcom and acted sessions), whereas the
+illustrative contact-center and affective-monitoring settings involve
+ASR-transcribed spontaneous speech, different registers and noise, and
+different label taxonomies. We provide no industrial-domain evaluation, and
+the deployment projections in Section~6.2 are extrapolations, not
+measurements; out-of-domain validation is required before deployment claims.
+\label{sec:limitations}
+
+\section{Conclusion}
+\label{sec:conclusion}
+We showed that a heterogeneous, comparably capable LLM acts as an effective
+selective verifier for conversational emotion recognition: invoked on the
+low-confidence quarter of traffic, it improves eight-seed weighted-F1 by
+$+0.49$ points ($p{=}0.019$) at $1.27\times$ expected cost, and the frozen
+gate transfers to IEMOCAP ($+1.21$, three seeds). A control ladder
+establishes that the gain requires independence, capability parity, and
+selective invocation jointly---same-model debate and self-consistency fail at
+two temperatures, while a weak reviewer fails despite independence. The
+arbitration rule nearly exhausts its available signal, and calibration
+analysis shows routing relies on confidence ranking rather than absolute
+values. Deploying stronger base models, richer arbiter features, and an
+abstention branch for rare classes are natural next steps.
+
+
+\appendix
+\section{Prompt and truncation protocol}
+\label{app:prompts}
+\paragraph{Classification prompt.}
+The prompt lists the admissible label words, the speaker-tagged dialogue
+history (one turn per line), and the target utterance, and instructs the model
+to answer with exactly one label word from the list and nothing else. The
+reviewer receives the identical contract; its optional hint appends a
+three-item self-check (literal wording versus contextual affect; speaker-state
+continuation versus reaction; degeneration toward majority classes on rare
+labels). Both prompt variants are released verbatim in the code archive.
+\paragraph{Left truncation.}
+All prompts are tokenized with the tokenizer's automatic truncation disabled.
+When the sequence exceeds the model context, history is truncated from the left
+while the BOS token, the target utterance, and the most recent turns are
+retained, so the tail semantics required for label generation are never cut.
+\paragraph{Generation and scoring budget.}
+Labels are generated greedily with $\max\_\text{new\_tokens}{=}8$ (sufficient
+for one label word plus a newline). Confidence scoring adds exactly one
+teacher-forced forward pass per utterance over the candidate label sequences;
+no long-form rationale is generated at deployment.
+
+\input{declarations}
+
+\bibliographystyle{elsarticle-num}
+\bibliography{refs}
+
+\end{document}

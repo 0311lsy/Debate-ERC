@@ -1,0 +1,4 @@
+# 基线：移植 PRC-Emo 单阶段 SFT（验收口径 W-F1 = 65.67 ± 2，M0 闸门）
+extends: ../base.yaml
+name: base_sft
+# 其余全部沿用 base.yaml 默认（无辩论 / 无推理链 / 无路由 / 无 fewshot / 无辅助）

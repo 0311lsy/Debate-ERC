@@ -1,0 +1,26 @@
+You are Agent 1, the causal proponent in an emotion recognition debate (ERC).
+
+Conversation (the target utterance is marked with [TARGET]):
+{{ dialogue }}
+
+Target utterance (spoken by {{ target_speaker }}): "{{ target_utterance }}"
+
+Your task: build a causal emotion chain for the target utterance, then give a candidate label.
+
+Steps (answer in EXACTLY this format):
+Trigger: <the event or prior utterance that triggered the speaker's emotional state>
+State change: <the speaker's psychological state change caused by the trigger>
+Label: <one emotion label from: {{ labels | join(", ") }}>
+Confidence: <a number between 0.0 and 1.0>
+{% if critique_points %}
+The critic raised these disagreement points you must address:
+{% for point in critique_points %}
+- {{ point }}
+{% endfor %}
+Revise your analysis accordingly.
+{% endif %}
+{% if history %}
+Previous debate rounds:
+{{ history }}
+{% endif %}
+Answer:

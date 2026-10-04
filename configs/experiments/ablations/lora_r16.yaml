@@ -1,0 +1,6 @@
+# 消融：LoRA rank 16（不变量测试豁免组：允许与基线 LoRA 不同）
+extends: ../debate_erc_full.yaml
+name: lora_r16
+lora:
+  r: 16
+  alpha: 32

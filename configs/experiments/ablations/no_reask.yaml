@@ -1,0 +1,5 @@
+# 消融：关闭二次提交兜底（预期兜底触发率 = 0）
+extends: ../debate_erc_full.yaml
+name: no_reask
+reask:
+  enabled: false

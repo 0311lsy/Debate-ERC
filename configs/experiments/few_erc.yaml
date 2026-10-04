@@ -1,0 +1,10 @@
+# 组件3 Few-ERC：少数类定向合成 + focal loss + CB 权重
+# （V3 7.3 目标：fear recall ≥ 28%、disgust recall ≥ 48%）
+extends: ../base.yaml
+name: few_erc
+fewshot:
+  synthesis_enabled: true
+  synthesis_ratio: 1.8
+  focal_loss_enabled: true
+  focal_gamma: 2.0
+  class_balanced: true

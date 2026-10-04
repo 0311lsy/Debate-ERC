@@ -1,0 +1,8 @@
+# Layer 1 组件消融 A：仅合成增强，配比降到 1.2x（M1 为 1.8x），
+# 不开 focal / class_balanced / 辅助任务 / DPO / 辩论。
+# 目的：隔离合成数据本身的贡献，排除三重类平衡叠加的过校正。
+extends: ../../base.yaml
+name: abl_syn12
+fewshot:
+  synthesis_enabled: true
+  synthesis_ratio: 1.2

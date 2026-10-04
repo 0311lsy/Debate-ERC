@@ -1,0 +1,29 @@
+# 主攻 Debate-ERC 完整方案（V3 6.5 目标：W-F1 ≥ 69.0 / Macro-F1 ≥ 57）
+# 辩论(含兜底) + 推理链 + 难度路由 + Few-ERC + 强度辅助 + DPO 蒸馏
+extends: ../base.yaml
+name: debate_erc_full
+debate:
+  enabled: true
+  max_rounds: 3
+  confidence_threshold: 0.6
+reask:
+  enabled: true
+  mode: conclude                  # 有限集成：仅结论阶段兜底重提（V3 6.7.3）
+reasoning:
+  enabled: true
+routing:
+  enabled: true
+fewshot:
+  synthesis_enabled: true
+  synthesis_ratio: 1.8
+  focal_loss_enabled: true
+  class_balanced: true
+aux_tasks:                        # 强度估计辅助任务（任务特定 adapter r=32）
+  - name: intensity
+    enabled: true
+    lora_r: 32
+    lora_alpha: 64
+    loss_weight: 0.3
+    switch_steps: 100
+training:
+  dpo_enabled: true

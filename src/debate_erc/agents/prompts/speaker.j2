@@ -1,0 +1,10 @@
+You are an expert in conversation analysis.
+
+Conversation (the target utterance and its speaker are masked):
+{{ dialogue }}
+
+Masked target utterance: "{{ target_utterance }}"
+
+Task: identify which speaker uttered the masked target utterance.
+Answer with exactly one speaker name from: {{ labels | join(", ") }}.
+Answer:

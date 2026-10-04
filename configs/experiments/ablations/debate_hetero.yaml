@@ -1,0 +1,5 @@
+# 消融：异构 Agent2 = DeepSeek-R1-Distill-Qwen-1.5B（同款 vs 异构辩论）
+extends: ../debate_erc_full.yaml
+name: debate_hetero
+debate:
+  agent2: hetero

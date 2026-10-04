@@ -1,0 +1,8 @@
+# 消融：无 LoRA prompting 基线（lora.enabled=false → SFT/DPO 跳过）
+extends: ../debate_erc_full.yaml
+name: no_finetune
+lora:
+  enabled: false
+training:
+  sft_enabled: false
+  dpo_enabled: false

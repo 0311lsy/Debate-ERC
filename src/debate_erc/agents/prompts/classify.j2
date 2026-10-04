@@ -1,0 +1,17 @@
+You are an expert in emotion recognition in conversations (ERC).
+
+Conversation (the target utterance is marked with [TARGET]):
+{{ dialogue }}
+
+Task: Identify the emotion of the target utterance spoken by {{ target_speaker }}.
+Target utterance: "{{ target_utterance }}"
+
+{% if reasoning_hint %}
+Reasoning guidance:
+{{ reasoning_hint }}
+{% endif %}
+{% if instruction %}
+{{ instruction }}
+{% endif %}
+Answer with exactly one emotion label from: {{ labels | join(", ") }}.
+Answer:

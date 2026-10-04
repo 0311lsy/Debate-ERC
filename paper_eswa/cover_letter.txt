@@ -1,0 +1,44 @@
+Dear Editors of Expert Systems with Applications,
+
+We submit our manuscript "Selective Cross-Model Verification for Emotion
+Recognition in Conversations: When and Why Heterogeneous Review Helps" for
+consideration as a research article.
+
+Why ESWA. The paper is an applied intelligent-systems study rather than a
+pure machine-learning method paper: it answers a deployment question—given an
+already-deployed fine-tuned LLM classifier, when should a second model be
+consulted, at what cost, and under what structural conditions does the
+consultation help? The deliverable is a cost-aware inference policy with
+measured operating points (1.27x expected compute, Pareto frontier), hardware
+footprint (two 7B models on one 48GB GPU), and a quantified error-reduction
+projection for high-volume ERC pipelines. This emphasis on expert-system
+deployment, cost-quality trade-offs, and reproducible operating conditions
+matches ESWA's scope; the mechanism-only narrative would instead target KBS or
+Pattern Recognition.
+
+What is new and verified.
+1. A selective cross-model verification framework whose gain is established
+   over eight paired seeds with paired t-test, Wilcoxon, and bootstrap
+   confidence intervals (p=0.019), and which transfers zero-shot (frozen
+   hyperparameters) to IEMOCAP over three seeds (p=0.037).
+2. A control ladder isolating the necessary conditions: homogeneous
+   self-debate, self-consistency at two temperatures, and a capability-mismatched
+   1.5B reviewer all fail, while a 3x3 factorial cross shows the gain is
+   multiplicative in reviewer independence and capability parity.
+3. A cost-accuracy Pareto characterization and an explicit, honestly reported
+   boundary: the rule gate nearly exhausts its available signal, abstention is
+   needed for rare classes, and two negative seeds plus a mixed hint ablation
+   are reported rather than suppressed.
+
+Compliance. Highlights (3-5 bullets, <=85 characters each), CRediT statement,
+competing-interest declaration, data-availability statement with a permanent
+artifact plan, and the generative-AI usage declaration are included. Code,
+prompts, aggregation scripts, and per-utterance prediction records will be
+archived with a Zenodo DOI; base LLM weights follow their upstream licenses.
+
+The manuscript is original, has not been published elsewhere, and is not under
+consideration by another journal. We thank the editors and reviewers for their
+time.
+
+Sincerely,
+Anonymous Author (corresponding), on behalf of all authors

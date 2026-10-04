@@ -1,0 +1,6 @@
+# Layer 1 组件消融 C：仅 class_balanced 采样/加权，无合成 / focal / 辅助 / DPO。
+# 目的：隔离类平衡本身的贡献（Layer 0 怀疑它与合成+focal 三重叠加导致过校正）。
+extends: ../../base.yaml
+name: abl_cb
+fewshot:
+  class_balanced: true

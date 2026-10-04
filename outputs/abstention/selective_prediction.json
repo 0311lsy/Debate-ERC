@@ -1,0 +1,121 @@
+{
+  "n": 2610,
+  "checkpoints": {
+    "m0_sft": {
+      "full_metrics": {
+        "wf1": 0.686,
+        "macro_f1": 0.5462,
+        "accuracy": 0.6946,
+        "error_rate": 0.3054
+      },
+      "aurc_confidence": 0.156057,
+      "aurc_random": 0.307144,
+      "aurc_oracle": 0.052261,
+      "coverage_at_risk": {
+        "risk<=0.05": 0.192,
+        "risk<=0.1": 0.3697
+      },
+      "abstention": {
+        "abstain_5pct": {
+          "coverage": 0.9502,
+          "selective_wf1": 0.6959,
+          "selective_macro": 0.5473,
+          "selective_acc": 0.706,
+          "random_abstain_wf1": 0.6863,
+          "random_abstain_acc": 0.6952
+        },
+        "abstain_10pct": {
+          "coverage": 0.9,
+          "selective_wf1": 0.7059,
+          "selective_macro": 0.5515,
+          "selective_acc": 0.7182,
+          "random_abstain_wf1": 0.686,
+          "random_abstain_acc": 0.6952
+        },
+        "abstain_20pct": {
+          "coverage": 0.8,
+          "selective_wf1": 0.7238,
+          "selective_macro": 0.5403,
+          "selective_acc": 0.7428,
+          "random_abstain_wf1": 0.6888,
+          "random_abstain_acc": 0.6988
+        },
+        "abstain_30pct": {
+          "coverage": 0.7,
+          "selective_wf1": 0.7469,
+          "selective_macro": 0.5364,
+          "selective_acc": 0.7712,
+          "random_abstain_wf1": 0.6936,
+          "random_abstain_acc": 0.7028
+        },
+        "abstain_40pct": {
+          "coverage": 0.6,
+          "selective_wf1": 0.7769,
+          "selective_macro": 0.5143,
+          "selective_acc": 0.8065,
+          "random_abstain_wf1": 0.6919,
+          "random_abstain_acc": 0.7005
+        }
+      },
+      "excess_aurc_vs_oracle": 0.103796
+    },
+    "m1_dpo": {
+      "full_metrics": {
+        "wf1": 0.6621,
+        "macro_f1": 0.5098,
+        "accuracy": 0.6632,
+        "error_rate": 0.3368
+      },
+      "aurc_confidence": 0.192467,
+      "aurc_random": 0.338002,
+      "aurc_oracle": 0.06443,
+      "coverage_at_risk": {
+        "risk<=0.05": 0.0134,
+        "risk<=0.1": 0.2157
+      },
+      "abstention": {
+        "abstain_5pct": {
+          "coverage": 0.9502,
+          "selective_wf1": 0.6688,
+          "selective_macro": 0.5074,
+          "selective_acc": 0.6746,
+          "random_abstain_wf1": 0.6627,
+          "random_abstain_acc": 0.6641
+        },
+        "abstain_10pct": {
+          "coverage": 0.9,
+          "selective_wf1": 0.6796,
+          "selective_macro": 0.514,
+          "selective_acc": 0.6884,
+          "random_abstain_wf1": 0.6599,
+          "random_abstain_acc": 0.6616
+        },
+        "abstain_20pct": {
+          "coverage": 0.8,
+          "selective_wf1": 0.7017,
+          "selective_macro": 0.5205,
+          "selective_acc": 0.7179,
+          "random_abstain_wf1": 0.6587,
+          "random_abstain_acc": 0.6609
+        },
+        "abstain_30pct": {
+          "coverage": 0.7,
+          "selective_wf1": 0.7367,
+          "selective_macro": 0.5377,
+          "selective_acc": 0.7575,
+          "random_abstain_wf1": 0.6646,
+          "random_abstain_acc": 0.6656
+        },
+        "abstain_40pct": {
+          "coverage": 0.6,
+          "selective_wf1": 0.7607,
+          "selective_macro": 0.54,
+          "selective_acc": 0.7842,
+          "random_abstain_wf1": 0.6627,
+          "random_abstain_acc": 0.6635
+        }
+      },
+      "excess_aurc_vs_oracle": 0.128037
+    }
+  }
+}

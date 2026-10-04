@@ -1,0 +1,28 @@
+{
+  "k": 5,
+  "seed": 42,
+  "sampling": {
+    "max_new_tokens": 8,
+    "do_sample": true,
+    "temperature": 0.7,
+    "top_p": 0.9
+  },
+  "n_test": 2610,
+  "greedy": {
+    "wf1": 0.685951,
+    "macro_f1": 0.546161,
+    "accuracy": 0.694636
+  },
+  "sc3": {
+    "wf1": 0.665932,
+    "macro_f1": 0.515486,
+    "accuracy": 0.674713
+  },
+  "sc5": {
+    "wf1": 0.670417,
+    "macro_f1": 0.516402,
+    "accuracy": 0.680077
+  },
+  "delta_wf1_sc3_vs_greedy": -0.020019,
+  "delta_wf1_sc5_vs_greedy": -0.015534
+}

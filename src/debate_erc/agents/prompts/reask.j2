@@ -1,0 +1,32 @@
+You previously analyzed the emotion of a target utterance in a conversation, but the debate
+did not reach a confident conclusion.
+
+Conversation (the target utterance is marked with [TARGET]):
+{{ dialogue }}
+
+Target utterance (spoken by {{ target_speaker }}): "{{ target_utterance }}"
+
+{% if disagreement_points %}
+Disagreement points from the debate:
+{% for point in disagreement_points %}
+- {{ point }}
+{% endfor %}
+
+Your previous conclusion: {{ previous_label }} (confidence {{ previous_confidence | round(2) }})
+
+Task: re-argue your conclusion from scratch, explicitly resolving EACH disagreement point
+above. Do not simply repeat your previous answer; re-derive it.
+{% else %}
+Your previous conclusion: {{ previous_label }} (confidence {{ previous_confidence | round(2) }})
+
+Task: your conclusion was accepted but with low confidence. Re-examine the trigger event,
+the speaker's psychological state and the conversational context from scratch. Do not
+simply repeat your previous answer; re-derive it.
+{% endif %}
+
+Answer in EXACTLY this format:
+Re-analysis:
+<one short paragraph>
+Label: <one emotion label from: {{ labels | join(", ") }}>
+Confidence: <a number between 0.0 and 1.0>
+Answer:

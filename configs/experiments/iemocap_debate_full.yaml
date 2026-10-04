@@ -1,0 +1,31 @@
+# IEMOCAP 完整方案：组件组合对齐 debate_erc_full（V3 6.5），仅切换数据集
+# dataset 标签进入 run_id（非 meld）：iemocap_debate_full_route_auxi_focal_dpo_s42
+# IEMOCAP 4 类口径（neutral/joyful/sadness/anger），不与 MELD 跨集比较
+extends: ../data/iemocap.yaml
+name: iemocap_debate_full
+debate:
+  enabled: true
+  max_rounds: 3
+  confidence_threshold: 0.6
+reask:
+  enabled: true
+  mode: conclude                  # 有限集成：仅结论阶段兜底重提（V3 6.7.3）
+reasoning:
+  enabled: true
+routing:
+  enabled: true
+fewshot:
+  # R2-M1：synthesis 仅支持 MELD 少数类 fear/disgust，IEMOCAP 4 类不含
+  # 这两类——开启会静默产出零样本且 run_id 的 syn 段归因错误，必须关闭
+  synthesis_enabled: false
+  focal_loss_enabled: true
+  class_balanced: true
+aux_tasks:                        # 强度估计辅助任务（任务特定 adapter r=32）
+  - name: intensity
+    enabled: true
+    lora_r: 32
+    lora_alpha: 64
+    loss_weight: 0.3
+    switch_steps: 100
+training:
+  dpo_enabled: true

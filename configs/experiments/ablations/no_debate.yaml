@@ -1,0 +1,24 @@
+# 消融：单 Agent + CoT 基线（V3 6.4：去掉辩论，仅保留推理链注入）
+# 显式关闭 routing / fewshot 三开关 / 双辅助任务；debate/reask/dpo 随辩论关闭
+# 预期 run_id：no_debate_reason_s42（name + method，空 parts）
+extends: ../debate_erc_full.yaml
+name: no_debate
+debate:
+  enabled: false
+reask:
+  enabled: false
+reasoning:
+  enabled: true
+routing:
+  enabled: false
+fewshot:
+  synthesis_enabled: false
+  focal_loss_enabled: false
+  class_balanced: false
+aux_tasks:                        # 列表字段：extends 直接整体覆盖
+  - name: intensity
+    enabled: false
+  - name: speaker_task
+    enabled: false
+training:
+  dpo_enabled: false

@@ -1,0 +1,17 @@
+# 消融：双辅助任务组合（主任务 + 强度 + 说话人，验证负迁移，V3 5.5）
+# run_id 标签 auxi_auxs（与单辅助 auxi / auxs 区分）
+extends: ../debate_erc_full.yaml
+name: aux_three_task
+aux_tasks:                        # 列表字段：extends 直接整体覆盖
+  - name: intensity
+    enabled: true
+    lora_r: 32
+    lora_alpha: 64
+    loss_weight: 0.3
+    switch_steps: 100
+  - name: speaker_task
+    enabled: true
+    lora_r: 32
+    lora_alpha: 64
+    loss_weight: 0.3
+    switch_steps: 100

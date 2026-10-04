@@ -1,0 +1,7 @@
+# 组件2 Adaptive-ERC：推理链 + 难度路由（V3 7.2：平均延迟 ≤ 1s 目标）
+extends: ../base.yaml
+name: adaptive_erc
+reasoning:
+  enabled: true
+routing:
+  enabled: true

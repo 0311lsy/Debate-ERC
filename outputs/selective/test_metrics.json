@@ -1,0 +1,40 @@
+{
+  "adapter": "/home/lsy20252770/Agent_Reason/Debate-ERC/outputs/runs/base_sft_s42/adapter_main/main",
+  "params_from_dev": {
+    "tau": 0.4,
+    "margin": 0.2
+  },
+  "n_test": 2610,
+  "proponent_only": {
+    "wf1": 0.685951,
+    "macro_f1": 0.546161,
+    "accuracy": 0.694636
+  },
+  "selective_deliberation": {
+    "wf1": 0.679589,
+    "macro_f1": 0.528777,
+    "accuracy": 0.694253,
+    "per_class_f1": {
+      "neutral": 0.807,
+      "joyful": 0.6701,
+      "sadness": 0.4207,
+      "anger": 0.5572,
+      "surprise": 0.6123,
+      "disgust": 0.4034,
+      "fear": 0.2308
+    }
+  },
+  "delta_wf1": -0.006362,
+  "delta_macro": -0.017384,
+  "trigger_rate": 0.1958,
+  "n_trigger": 511,
+  "n_flip": 126,
+  "flip_correct": 48,
+  "flip_wrong": 49,
+  "flip_net_correct": -1,
+  "triggered_bucket": {
+    "n": 511,
+    "proponent_acc": 0.4618,
+    "final_acc": 0.4599
+  }
+}

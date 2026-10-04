@@ -1,0 +1,12 @@
+# Layer 1 组件消融 D：仅强度估计辅助任务（r=32, loss_weight=0.3, switch 100），
+# 无合成 / focal / 类平衡 / DPO / 辩论。
+# 目的：隔离多任务辅助对主任务分类的贡献。
+extends: ../../base.yaml
+name: abl_auxi
+aux_tasks:
+  - name: intensity
+    enabled: true
+    lora_r: 32
+    lora_alpha: 64
+    loss_weight: 0.3
+    switch_steps: 100

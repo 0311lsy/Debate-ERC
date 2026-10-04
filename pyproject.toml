@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "debate-erc"
+version = "0.1.0"
+description = "Debate-ERC: 错误分析驱动的推理增强式对话情感识别（双 Agent 辩论 + Re-ask 兜底 + DPO 蒸馏）"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.7",
+    "transformers>=4.45",
+    "peft>=0.13",
+    "accelerate>=0.34",
+    "jinja2>=3.1",
+    "pyyaml>=6.0",
+    "scikit-learn>=1.3",
+    "numpy>=1.24",
+]
+
+[project.optional-dependencies]
+stats = ["scipy>=1.10"]
+lexicon = ["vaderSentiment>=3.3"]
+dev = ["pytest>=7.4", "importlinter>=2.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# ---------------------------------------------------------------------------
+# importlinter 分层契约（依赖只允许自上而下；lint-imports 检查，未安装时不影响 pytest）
+# 分层（自高到低，按 AST 实测 import 图排序，R2-M4 修复）：
+#   pipeline → aux_task → training → evaluation → debate →
+#     [agents|reasoning|routing|fewshot] → [data|models] → utils
+# - config 不参与分层（被 models/training/pipeline 共享的基础设施，视为独立模块）
+# - aux_task → training（MultitaskScheduler 持有 SFTTrainer）为真实依赖：
+#   两者必须分属上下两层，置于同一层（`|`/list 同层互禁）会必报违例
+# - 同层多模块（list 形式）= 互相独立（禁止彼此 import）：
+#   agents/reasoning/routing/fewshot 与 data/models 两组均已核实无横向依赖
+# ---------------------------------------------------------------------------
+[tool.importlinter]
+root_packages = ["debate_erc"]
+
+[[tool.importlinter.contracts]]
+name = "Debate-ERC 分层架构（高层可 import 低层，低层禁止反向依赖）"
+type = "layers"
+layers = [
+    "debate_erc.pipeline",
+    "debate_erc.aux_task",
+    "debate_erc.training",
+    "debate_erc.evaluation",
+    "debate_erc.debate",
+    ["debate_erc.agents", "debate_erc.reasoning", "debate_erc.routing", "debate_erc.fewshot"],
+    ["debate_erc.data", "debate_erc.models"],
+    "debate_erc.utils",
+]
+containers = ["debate_erc"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,5 @@
+# 消融：LoRA 目标模块 q+k+v+o（不变量测试豁免组）
+extends: ../debate_erc_full.yaml
+name: lora_qkv
+lora:
+  target_modules: [q_proj, k_proj, v_proj, o_proj]

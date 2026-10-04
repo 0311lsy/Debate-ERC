@@ -1,0 +1,6 @@
+# MELD 官方 7 类口径（V3 4.2 类目表：train 9989 / dev 1109 / test 2610）
+# 用法：实验配置 extends 本文件切换数据集
+extends: ../base.yaml
+data:
+  dataset: meld
+  raw_path: /home/lsy20252770/Agent_Reason/PRC-Emo/data/raw

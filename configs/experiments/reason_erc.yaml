@@ -1,0 +1,7 @@
+# 组件1 Reason-ERC：仅推理链注入 + DPO（V3 7.1：W-F1 ≥ 68 目标）
+extends: ../base.yaml
+name: reason_erc
+reasoning:
+  enabled: true
+training:
+  dpo_enabled: true

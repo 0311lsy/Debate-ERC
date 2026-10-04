@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# SC 多 seed 补全队列（M6）：s43/s44 × T=0.7/T=0.3，共 4 段串行。
+# 每段严格使用同 seed 的 proponent adapter 与同 seed 贪心 y_a（按 idx 对齐）。
+set -u
+cd /home/lsy20252770/Agent_Reason/Debate-ERC
+PY=/home/lsy20252770/.conda/envs/instructerc/bin/python
+LOG=outputs/sc_multiseed_queue.log
+
+run() {
+  local S=$1 T=$2
+  echo "########## SC s$S T=$T $(date '+%F %T') ##########" >> "$LOG"
+  $PY -u scripts/self_consistency.py \
+    --seed $S --k 5 --temperature $T \
+    --prop_adapter outputs/runs/base_sft_s$S/adapter_main/main \
+    --base-records outputs/selective_hetero/qwen7b_${S}_shared/test_records.jsonl \
+    >> "$LOG" 2>&1 \
+    && echo "[queue] s$S T=$T 完成 $(date '+%T')" >> "$LOG" \
+    || echo "[queue] s$S T=$T FAILED $(date '+%T')" >> "$LOG"
+}
+
+echo "[queue] 启动 $(date '+%F %T')" > "$LOG"
+run 43 0.7
+run 44 0.7
+run 43 0.3
+run 44 0.3
+echo "########## SC 多 seed 队列全部完成 $(date '+%F %T') ##########" >> "$LOG"

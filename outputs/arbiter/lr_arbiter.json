@@ -1,0 +1,130 @@
+{
+  "lr": {
+    "wf1": 69.05,
+    "macro_f1": 55.48,
+    "acc": 69.89,
+    "n_flip": 37,
+    "rescue": 19,
+    "harm": 8
+  },
+  "rule": {
+    "wf1": 69.63,
+    "macro_f1": 56.1,
+    "acc": 70.46,
+    "n_flip": 154,
+    "rescue": 64,
+    "harm": 38
+  },
+  "always": {
+    "wf1": 67.58,
+    "macro_f1": 54.09,
+    "acc": 68.35,
+    "n_flip": 533,
+    "rescue": 179,
+    "harm": 208
+  },
+  "conf": {
+    "wf1": 69.18,
+    "macro_f1": 55.7,
+    "acc": 70.0,
+    "n_flip": 218,
+    "rescue": 83,
+    "harm": 69
+  },
+  "proponent_only": {
+    "wf1": 68.6
+  },
+  "oracle": {
+    "wf1": 75.53
+  },
+  "lr_threshold_sweep": [
+    {
+      "thr": 0.3,
+      "wf1": 69.4,
+      "flip_precision": 0.394,
+      "n_flip": 282,
+      "rescue": 111,
+      "harm": 94
+    },
+    {
+      "thr": 0.35,
+      "wf1": 69.65,
+      "flip_precision": 0.438,
+      "n_flip": 178,
+      "rescue": 78,
+      "harm": 52
+    },
+    {
+      "thr": 0.4,
+      "wf1": 69.16,
+      "flip_precision": 0.429,
+      "n_flip": 105,
+      "rescue": 45,
+      "harm": 31
+    },
+    {
+      "thr": 0.45,
+      "wf1": 69.37,
+      "flip_precision": 0.531,
+      "n_flip": 64,
+      "rescue": 34,
+      "harm": 14
+    },
+    {
+      "thr": 0.5,
+      "wf1": 69.05,
+      "flip_precision": 0.514,
+      "n_flip": 37,
+      "rescue": 19,
+      "harm": 8
+    },
+    {
+      "thr": 0.55,
+      "wf1": 68.92,
+      "flip_precision": 0.75,
+      "n_flip": 12,
+      "rescue": 9,
+      "harm": 1
+    },
+    {
+      "thr": 0.6,
+      "wf1": 68.6,
+      "flip_precision": 0.0,
+      "n_flip": 0,
+      "rescue": 0,
+      "harm": 0
+    }
+  ],
+  "disagreement_pool": {
+    "n": 533,
+    "potential_rescue": 179,
+    "potential_harm": 208,
+    "both_wrong": 146,
+    "yb_correct_rate": 0.3358
+  },
+  "_meta": {
+    "n_dev": 1109,
+    "n_test": 2610,
+    "n_dev_disagree": 223,
+    "dev_disagree_rate": 0.2011,
+    "train_acc_threshold05": 0.6861,
+    "lr_coef": [
+      0.767,
+      1.4562,
+      0.6893,
+      0.2636,
+      0.6492,
+      -0.2019,
+      -0.0367
+    ],
+    "feature_names": [
+      "p_a",
+      "p_b",
+      "p_b-p_a",
+      "|p_a-p_b|",
+      "low_conf",
+      "prior_err_ya",
+      "prior_err_yb"
+    ]
+  }
+}

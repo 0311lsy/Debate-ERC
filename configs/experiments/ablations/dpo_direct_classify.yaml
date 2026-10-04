@@ -1,0 +1,16 @@
+# 实验 C（M1 归因修复验证）：DPO 后纯单 Agent 直接分类
+# 关闭辩论 / 路由 / reasoning / reask——训练配方与 debate_erc_full 完全一致
+# （fewshot 合成 + intensity 辅助 + DPO），推理 adapter 可直接复用
+# debate_full run 的 dpo_epoch3，无需重训；亦作为 M3 消融矩阵的"无辩论 DPO"对照。
+extends: ../debate_erc_full.yaml
+name: dpo_direct_classify
+debate:
+  enabled: false
+reask:
+  enabled: false
+reasoning:
+  enabled: false
+routing:
+  enabled: false
+training:
+  dpo_enabled: false   # 本配置仅用于纯推理评估（复用 debate_full 的 DPO adapter）；M3 如需全量训练对照再开启

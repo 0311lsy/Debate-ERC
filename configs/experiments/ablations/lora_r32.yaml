@@ -1,0 +1,6 @@
+# 消融：LoRA rank 32（不变量测试豁免组）
+extends: ../debate_erc_full.yaml
+name: lora_r32
+lora:
+  r: 32
+  alpha: 64

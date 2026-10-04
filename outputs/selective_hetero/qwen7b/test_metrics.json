@@ -1,0 +1,43 @@
+{
+  "params_from_dev": {
+    "tau": 0.7,
+    "margin": 0.05
+  },
+  "n_test": 2610,
+  "proponent_only": {
+    "wf1": 0.685951,
+    "macro_f1": 0.546161,
+    "accuracy": 0.694636
+  },
+  "critic_standalone_all": {
+    "wf1": 0.691568,
+    "accuracy": 0.7
+  },
+  "hetero_deliberation": {
+    "wf1": 0.69606,
+    "macro_f1": 0.561995,
+    "accuracy": 0.704215,
+    "per_class_f1": {
+      "neutral": 0.8143,
+      "joyful": 0.6735,
+      "sadness": 0.4814,
+      "anger": 0.5828,
+      "surprise": 0.6284,
+      "disgust": 0.4286,
+      "fear": 0.325
+    }
+  },
+  "delta_wf1": 0.010109,
+  "delta_macro": 0.015834,
+  "trigger_rate": 0.3084,
+  "n_trigger": 805,
+  "n_flip": 160,
+  "flip_correct": 66,
+  "flip_wrong": 41,
+  "flip_net_correct": 25,
+  "triggered_bucket": {
+    "n": 805,
+    "proponent_acc": 0.4497,
+    "final_acc": 0.4807
+  }
+}

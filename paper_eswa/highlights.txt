@@ -1,0 +1,7 @@
+Highlights（每条 ≤85 字符，含空格；3-5 条）
+
+- Gated heterogeneous LLM review improves ERC by +0.49 F1 (8 seeds, p=.019)
+- Same-source extra compute fails: self-debate -0.64, self-consistency <0
+- Gain needs reviewer independence and capability parity jointly
+- 27% review rate reaches the cost-accuracy Pareto frontier at 1.27x cost
+- MELD-frozen gate transfers zero-shot to IEMOCAP (+1.21 F1, 3 seeds)

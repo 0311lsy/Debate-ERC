@@ -1,0 +1,74 @@
+{
+  "m0_sft": {
+    "wf1": 0.6859508634229551,
+    "macro_f1": 0.5461610671236692,
+    "accuracy": 0.6946360153256705,
+    "per_class_f1": {
+      "neutral": 0.8094,
+      "joyful": 0.6709,
+      "sadness": 0.4538,
+      "anger": 0.5586,
+      "surprise": 0.6184,
+      "disgust": 0.4194,
+      "fear": 0.2927
+    },
+    "pred_distribution": {
+      "neutral": 1383,
+      "joyful": 385,
+      "anger": 278,
+      "sadness": 149,
+      "disgust": 56,
+      "surprise": 327,
+      "fear": 32
+    },
+    "elapsed_sec": 495.3
+  },
+  "m1_sft": {
+    "wf1": 0.6660975659606708,
+    "macro_f1": 0.5276777692068398,
+    "accuracy": 0.660536398467433,
+    "per_class_f1": {
+      "neutral": 0.7783,
+      "joyful": 0.6392,
+      "sadness": 0.4875,
+      "anger": 0.5634,
+      "surprise": 0.6039,
+      "disgust": 0.4138,
+      "fear": 0.2075
+    },
+    "pred_distribution": {
+      "neutral": 1103,
+      "joyful": 449,
+      "anger": 365,
+      "sadness": 153,
+      "disgust": 106,
+      "surprise": 378,
+      "fear": 56
+    },
+    "elapsed_sec": 491.1
+  },
+  "m1_dpo": {
+    "wf1": 0.6621350403091609,
+    "macro_f1": 0.5098383858381744,
+    "accuracy": 0.6632183908045977,
+    "per_class_f1": {
+      "neutral": 0.7975,
+      "joyful": 0.6493,
+      "sadness": 0.3146,
+      "anger": 0.5458,
+      "surprise": 0.6168,
+      "disgust": 0.3478,
+      "fear": 0.2971
+    },
+    "pred_distribution": {
+      "neutral": 1257,
+      "joyful": 482,
+      "anger": 245,
+      "fear": 125,
+      "disgust": 162,
+      "surprise": 280,
+      "sadness": 59
+    },
+    "elapsed_sec": 490.6
+  }
+}

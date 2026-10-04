@@ -1,0 +1,77 @@
+{
+  "n_seeds": 3,
+  "root": "outputs/selective_hetero",
+  "wf1": {
+    "proponent": "68.78 ± 0.19",
+    "deliberation": "69.29 ± 0.39",
+    "delta": "0.52 ± 0.58"
+  },
+  "macro_f1": {
+    "proponent": "54.67 ± 0.09",
+    "deliberation": "55.17 ± 0.95",
+    "delta": "0.50 ± 1.02"
+  },
+  "accuracy": {
+    "proponent": "69.51 ± 0.09",
+    "deliberation": "70.04 ± 0.54"
+  },
+  "per_seed": [
+    {
+      "tag": "qwen7b",
+      "proponent_wf1": 0.685951,
+      "deliberation_wf1": 0.69606,
+      "delta_wf1": 0.010109,
+      "delta_wf1_boot95ci": [
+        0.0023,
+        0.0182
+      ],
+      "delta_macro_boot95ci": [
+        0.0001,
+        0.0327
+      ],
+      "trigger_rate": 0.3084,
+      "n_flip": 160,
+      "flip_correct": 66,
+      "flip_wrong": 41,
+      "mcnemar_p": 0.0199
+    },
+    {
+      "tag": "qwen7b_s43",
+      "proponent_wf1": 0.689741,
+      "deliberation_wf1": 0.688532,
+      "delta_wf1": -0.00121,
+      "delta_wf1_boot95ci": [
+        -0.0072,
+        0.0048
+      ],
+      "delta_macro_boot95ci": [
+        -0.0187,
+        0.0091
+      ],
+      "trigger_rate": 0.118,
+      "n_flip": 97,
+      "flip_correct": 27,
+      "flip_wrong": 32,
+      "mcnemar_p": 0.6029
+    },
+    {
+      "tag": "qwen7b_s44",
+      "proponent_wf1": 0.68759,
+      "deliberation_wf1": 0.69423,
+      "delta_wf1": 0.006639,
+      "delta_wf1_boot95ci": [
+        -0.0017,
+        0.0153
+      ],
+      "delta_macro_boot95ci": [
+        -0.0129,
+        0.0196
+      ],
+      "trigger_rate": 0.2333,
+      "n_flip": 181,
+      "flip_correct": 73,
+      "flip_wrong": 52,
+      "mcnemar_p": 0.0732
+    }
+  ]
+}

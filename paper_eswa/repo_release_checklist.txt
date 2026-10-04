@@ -1,0 +1,28 @@
+代码与数据发布清单（M5，投稿前执行；需用户账号操作）
+====================================================
+
+[ ] 1. GitHub 公开仓库（建议名 debate-erc），导入：
+      - src/debate_erc/ 全部源码
+      - scripts/（训练、终审、self_consistency、calibration_analysis、
+        lr_arbiter、make_*figures、aggregate_8seeds_uniform、各队列脚本）
+      - configs/（全部 yaml，脱敏路径）
+      - prompts/（classify.j2 与 critic hint 原文）
+      - paper_eswa/（LaTeX 源、figures/、refs.bib）
+[ ] 2. 逐条预测记录（论文核心可复现资产，体积小直接入库）：
+      - outputs/selective_hetero/qwen7b/{dev,test}_records.jsonl
+      - outputs/selective_hetero/qwen7b_s4{3,4}_shared/test_records.jsonl
+      - outputs/selective_hetero/cross/critic4{2,3,4}_all_test.jsonl
+      - outputs/self_consistency/sc_k5_s{42,43,44}{,_t03}/summary.json
+      - outputs/calibration/calibration_summary.json
+      - outputs/abstention/selective_prediction.json
+[ ] 3. 不入库：checkpoints 大文件、raw MELD（给下载脚本+校验 sha256）、
+      wandb/、__pycache__；.gitignore 配好
+[ ] 4. README.md：环境版本（torch 2.7+cu128 / transformers 4.48）、
+      一键复现命令、8-seed 聚合命令、各表格到产物文件的映射表
+[ ] 5. LICENSE：代码 MIT/BSD-3；数据与模型权重沿用上游许可
+[ ] 6. LoRA 适配器：HF Hub 公开仓（proponent 8 个 + qwen/mistral critic），
+      README 说明 LLaMA2 基座需按 Meta 许可申请
+[ ] 7. 打 tag（如 v1.0-submission）→ Zenodo 导入 GitHub 仓生成 DOI
+[ ] 8. 将 DOI 与仓库 URL 回填 declarations.tex 的 Data availability 节
+[ ] 9. 双盲投稿版本：仓库在审稿期间使用匿名链接（anonymous.4open.science），
+      元数据去自指；接收后公开正式仓库

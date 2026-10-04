@@ -1,0 +1,10 @@
+You are an expert in emotion intensity estimation.
+
+Conversation (the target utterance is marked with [TARGET]):
+{{ dialogue }}
+
+Target utterance (spoken by {{ target_speaker }}): "{{ target_utterance }}"
+
+Task: estimate the intensity of the emotion expressed in the target utterance.
+Answer with exactly one intensity level from: {{ labels | join(", ") }}.
+Answer:
