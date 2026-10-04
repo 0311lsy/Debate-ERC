@@ -1,0 +1,84 @@
+{
+  "critic": {
+    "adapter": "outputs/hetero_critic/qwen7b_sft_s42/adapter_main/main",
+    "n": 7740,
+    "wf1": 0.7895030604904423,
+    "macro_f1": 0.4271009272920197,
+    "accuracy": 0.7633074935400517,
+    "wf1_logmean": 0.7895030604904423,
+    "macro_f1_logmean": 0.4271009272920197,
+    "accuracy_logmean": 0.7633074935400517,
+    "pred_agreement_sum_vs_mean": 1.0,
+    "per_class_f1": {
+      "neutral": 0.8566,
+      "joyful": 0.5453,
+      "sadness": 0.2642,
+      "anger": 0.4699,
+      "surprise": 0.3453,
+      "disgust": 0.3067,
+      "fear": 0.2016
+    },
+    "pred_distribution": {
+      "neutral": 5628,
+      "joyful": 859,
+      "sadness": 337,
+      "anger": 248,
+      "surprise": 440,
+      "disgust": 116,
+      "fear": 112
+    },
+    "ece": 0.1136,
+    "mean_top1_conf": 0.8759,
+    "calibration": [
+      {
+        "range": "[0.2,0.3)",
+        "n": 17,
+        "mean_conf": 0.277,
+        "acc": 0.412
+      },
+      {
+        "range": "[0.3,0.4)",
+        "n": 111,
+        "mean_conf": 0.355,
+        "acc": 0.36
+      },
+      {
+        "range": "[0.4,0.5)",
+        "n": 274,
+        "mean_conf": 0.458,
+        "acc": 0.456
+      },
+      {
+        "range": "[0.5,0.6)",
+        "n": 435,
+        "mean_conf": 0.553,
+        "acc": 0.494
+      },
+      {
+        "range": "[0.6,0.7)",
+        "n": 433,
+        "mean_conf": 0.651,
+        "acc": 0.51
+      },
+      {
+        "range": "[0.7,0.8)",
+        "n": 567,
+        "mean_conf": 0.753,
+        "acc": 0.547
+      },
+      {
+        "range": "[0.8,0.9)",
+        "n": 833,
+        "mean_conf": 0.857,
+        "acc": 0.683
+      },
+      {
+        "range": "[0.9,1.0)",
+        "n": 5070,
+        "mean_conf": 0.976,
+        "acc": 0.872
+      }
+    ],
+    "elapsed_sec": 885.0
+  }
+}

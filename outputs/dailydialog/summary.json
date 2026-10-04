@@ -1,0 +1,26 @@
+{
+  "n": 7740,
+  "tau": 0.65,
+  "margin": 0.05,
+  "decoding": "logprob-argmax (base 与 p_a 同一解码族)",
+  "proponent_greedy_ref": {
+    "wf1": 0.7913146583032642,
+    "macro_f1": 0.4378593042546372,
+    "accuracy": 0.7643410852713178
+  },
+  "base_wf1": 0.8236,
+  "base_macro_f1": 0.4689,
+  "base_acc": 0.8317,
+  "gated_wf1": 0.8155,
+  "gated_macro_f1": 0.4672,
+  "gated_acc": 0.8099,
+  "delta_wf1": -0.0081,
+  "trigger_rate_p_below_tau": 0.1497,
+  "adoption_rate": 0.0656,
+  "expected_cost_x": 1.1497,
+  "flips": {
+    "rescue": 136,
+    "harm": 304,
+    "neutral": 68
+  }
+}

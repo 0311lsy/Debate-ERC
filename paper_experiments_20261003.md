@@ -651,3 +651,33 @@ s43/s44 nohint 终审完成（tag `qwen7b_s43_nohint`/`qwen7b_s44_nohint`，固�
 - **协议审计**：论文 69.15 = unified-label Mixed 协议（三数据集统一标签混合 8 epoch，入口 `main_Unilabel.py`）；经 GitHub API 核对，该入口**官方未发布**（LIN-SHANG/InstructERC 的 code/ 仅 6 文件）。66.29 走的是已发布的单数据集 Plain 管线，两者协议不同，非复现失败。
 - **决策（方案 B）**：不投入自实现 unified 训练（18–30h GPU 且可被质疑）；Table 2 中 69.15 保留 as-reported，新增"released pipeline reproduced by us = 66.29"行与 §脚注说明官方代码缺口；配对锚点以自训 m0_sft 68.88（统一协议、8 seed）为准；措辞不做跨实现显著性声称。方案 A（自实现）留作 rebuttal 储备，原料（三个 pkl）与数据补丁脚本已就位（`external_baselines/instructerc_reproduction/`）。
 - 论文落点：main.tex Table 2（§标记行 + footnote）与 "Position relative to published systems" 段已改写。
+
+### 26.2 PRC-Emo（AAAI 2026）复现归档与 Table 2 水位更新（2026-10-04）
+
+- **论文值（S18，本地 PDF p.6 已核对，arXiv:2511.07061v3 / AAAI Vol.40 pp.31778–31786）**：完整 P+R+C（Qwen3-8B，5-seed）MELD **W-F1 70.44** / Acc 71.50；消融 w/o P+R+C=68.72、curriculum-only=69.34。
+- **本地复现（2026-09-29，原始工程 `Agent_Reason/PRC-Emo/`）**：LLaMA2-7B 替换基座 + default 简模板 + kshot=0 无检索 + curriculum(BN=2)，官方 LoRA 配方，seed 42–46：
+  - 68.56（s42，离线忠实重算）/67.08/68.22/**56.48（s45）**/68.01；**5-seed 均值 65.67±5.17**；排除病理 seed 67.97±0.63（仅敏感性参考）。
+  - 两个技术坑：①LLaMA2 强加 chat template 导致 `<|im_end|>` 随机初始化冻结、模型学不会停止（修复=post_process 按首换行截断，seed42 由 0.0 修正为 68.56）；②s45 训练正常但推理退化为无换行乱码串，该 seed 病理更极端。作者 Qwen 基座无此问题。
+- **归档**：`external_baselines/prc_emo_reproduction/`（README 完整审计 + `results/seed42_corrected_metrics.json` + `results/five_seed_metrics.json`）；adapter 每 seed 2.2GB 不复制，仅在清单记录原始路径与重评估入口。InstructERC 同步归档：`instructerc_reproduction/results/`（10-epoch 指标清单、best epoch8 逐句预测 JSONL 2610 条、分类报告；自算 W-F1 66.26 vs 官方自报 66.294 差 0.03 已注明）。
+- **论文改动**：Table 2 新增 PRC-Emo 70.44 reported 行 + 本地 65.67 复现行（¶脚注交代替换基座/简化协议/seed45 病理且声明均值保留该 seed）；Position 段水位从 69.1–69.3 改写为 70.44，新增"PRC-Emo 自家纯 LoRA 消融 68.72 + 两组复现共同框定 66–69 朴素微调带"的论证；refs.bib 加 `li2026prcemo`。
+- **口径红线**：65.67 不得与 70.44 直接对标（基座不同、P/R 未启用）；不据 70.44 做任何显著性声称；70.44 靠训练期增强达到，与部署期门控主张正交。
+
+## 27. DailyDialog 域外冻结迁移（M2(a)，2026-10-04 完成）——负结果，诚实回填
+
+**设置**：MELD-only 训练的 m0_sft proponent（s42）与 hetero_critic（s42）原样部署到 DailyDialog test（7740 条，标签映射到 MELD 7 类）；门控规则冻结主实验 τ=0.65/margin=0.05，零目标域调参；单 seed。标签分布极不平衡（greedy 预测中 neutral 5591/7740）。
+
+**结果**（`outputs/dailydialog/summary.json`）：
+
+| 口径 | W-F1 | Macro-F1 | Acc |
+|---|---|---|---|
+| proponent 贪心（参考） | 0.7913 | 0.4379 | 0.7643 |
+| proponent logprob-argmax（门控基线） | **0.8236** | 0.4689 | 0.8317 |
+| critic logprob-argmax 单独 | 0.7895 | 0.4271 | 0.7633 |
+| **冻结门控** | **0.8155（Δ=−0.81）** | 0.4672 | 0.8099 |
+
+- 触发率（p_a<0.65）14.97%，采纳率 6.56%，期望成本 1.15×；翻转 **rescue 136 / harm 304 / neutral 68**（harm 2.2× rescue）。
+- proponent 自身域外迁移良好（0.82），critic 在该分布上更弱（0.79），且 MELD 校准的置信度路由失效——门控增益不跨语体迁移。
+- 对照：MELD→IEMOCAP（同为表演/剧本语体、标签分布类似）冻结迁移 +1.21±0.42（§22.4）；DailyDialog 是自然聊天、neutral 主导，属跨语体（cross-register）失败。
+- 单 seed，不做显著性声称；不删除、不洗地。结论：**冻结门控的跨域主张限定为"同语体跨数据集"；跨语体部署需目标域校准门控并验证 reviewer 仍同档**。
+- 论文落点：摘要加负结果限定句；§5.3 新增 "Out-of-domain transfer (DailyDialog): a negative result" 段；Limitations (v) 由"待验证"改为已测负结果；highlights 第 5 条保留 IEMOCAP 范围（已显式具名，不含越界主张）。
+- 修复记录：①`scripts/eval_logprob.py` 标签 token 化去掉 LLaMA2 剥首 token 旧逻辑（Qwen BPE 整词单 token 被剥空），与 `backbone.score_labels` 对齐；②`scripts/dailydialog_aggregate.py` 适配实际产物（`*_details.jsonl` + `m0_sft_pred/m0_sft_p`、`critic_pred/critic_p` 字段），基线明确为 logprob-argmax（与 p_a 同解码族），贪心 0.7913 仅作解码参考。

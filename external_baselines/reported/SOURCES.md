@@ -71,12 +71,25 @@
   "InstructERC: Reforming Emotion Recognition in Conversation with a Complementary Retrieval and Multi-task Cognitive Framework."
   arXiv:2309.11911（v6）。代码：https://github.com/bafny/instructERC（请核对仓库）。
   出处：论文 MELD 主表，LLaMA2-7B + LoRA，W-F1 69.15。
-  **本研究唯一在统一框架下复现的外部方法**，见 `../instructerc_reproduction/`。
+  **本研究在本地复现（已发布的 meld-only 管线，66.29）**，见
+  `../instructerc_reproduction/`。
 
 - **S12. CKERC (2024)**
   常识知识增强 ERC，7B-class，MELD W-F1 69.27。
   ⚠️ 必须补全：准确论文标题、作者、venue、arXiv DOI、表格编号、开源链接；
   在补全前该行在论文中以 "[ref pending]" 占位，不得直接引用。
+
+- **S18. PRC-Emo (2026, AAAI-26)**
+  Xinran Li, Yu Liu, Jiaqi Qiao, Xiujuan Xu（大连理工大学）。
+  "Do LLMs Feel? Teaching Emotion Recognition with Prompts, Retrieval, and
+  Curriculum Learning."
+  Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 40,
+  pp. 31778–31786（AAAI OJS article 40446）；arXiv:2511.07061v3（2025-11-24）。
+  代码：https://github.com/LiXinran6/PRC-Emo
+  出处：本地存档 PDF（含附录版）第 6 页 Table 2：完整 PRC-Emo（Qwen3-8B，
+  5-seed 均值）MELD Acc 71.50 / W-F1 70.44；Table 3 消融 w/o C 70.07、
+  w/o R+C 69.62、w/o P+R+C 68.72；Table 4 curriculum-only(w/o S+I+R) 69.34。
+  **本研究在本地复现（替换基座的简化协议）**，见 `../prc_emo_reproduction/`。
 
 ## 多模态 / 外部知识方法（独立分块，不参与纯文本排序）
 
@@ -104,7 +117,8 @@
 - [ ] S12 CKERC 完整书目信息
 - [ ] S13–S16 多模态四行完整书目信息
 - [x] S17 DialogueLLM（arXiv:2310.11374v4 已核对）
-- [x] S11 InstructERC（arXiv:2309.11911 已核对）
+- [x] S11 InstructERC（arXiv:2309.11374 已核对）
+- [x] S18 PRC-Emo（AAAI OJS 40446 / arXiv:2511.07061v3 已核对）
 
 ## 本文自有数字（非 reported，供对照，不属外部基线）
 

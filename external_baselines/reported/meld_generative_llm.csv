@@ -1,7 +1,9 @@
 method,year,venue,base_model,meld_weighted_f1,modality,source_id,status,notes
 InstructERC,2024,COLING (arXiv v6),LLaMA2-7B LoRA,69.15,text,S11,reported,"69.15=unified-label Mixed 协议（MELD+IEMOCAP+EmoryNLP 混合训练 8 epoch，入口 main_Unilabel.py）；该入口官方 GitHub 未发布（2026-10-04 核对）。本地按已发布单数据集管线复现为 66.29（meld-only 10ep，协议不同，见 ../instructerc_reproduction/README.md）"
 CKERC,2024,2024 venue as cited,7B-class LLM,69.27,text,S12,reported,"常识知识增强 ERC；开源情况待核，若无可用代码则维持 reported"
+PRC-Emo,2026,AAAI 2026,Qwen3-8B LoRA,70.44,text,S18,reported,"完整 P+R+C（情绪描述 prompt+检索+课程学习）5-seed 均值，MELD Acc 71.50；消融：w/o C 70.07 / w/o R+C 69.62 / w/o P+R+C 68.72 / curriculum-only 69.34"
 Debate-ERC base (ours),2026,this work,LLaMA2-7B LoRA plain SFT,68.88,text,this_work,reproduced_8seed,"8-seed 均值 68.88±0.41；刻意朴素 SFT（无检索/无多任务/无外部知识）"
 Debate-ERC gated review (ours),2026,this work,LLaMA2-7B + Qwen2.5-7B verifier,69.37,text,this_work,reproduced_8seed,"8-seed 均值 69.37±0.39；期望成本 1.27x forward passes；配对 t p=0.019"
-InstructERC reproduced (ours),2026,this work,LLaMA2-7B LoRA (InstructERC protocol),TBD,text,this_work,reproduction_pending,"统一框架下复现值，多 seed；产出后填入并与 reported 69.15 并列展示"
-InstructERC + gated review (ours),2026,this work,InstructERC proponent + Qwen2.5-7B verifier,TBD,text,this_work,experiment_pending,"门控可叠加性实验：验证部署期增量能否叠在更强 proponent 上"
+InstructERC reproduced (ours),2026,this work,LLaMA2-7B LoRA (released MELD-only pipeline),66.29,text,this_work,reproduced_1seed,"meld-only/10ep/seed42 贪心，best epoch8；逐 epoch 证据见 ../instructerc_reproduction/results/。与 69.15 协议不同（官方 unified 入口未发布），差距不构成复现失败"
+PRC-Emo reproduced (ours),2026,this work,LLaMA2-7B substituted (default prompt,k=0,curriculum),65.67,text,this_work,reproduced_5seed,"5-seed(42-46) 均值 65.67±5.17；seed45=56.48 系 LLaMA2 替换基座冻结 chat-token 病理（作者 Qwen 配置不存在），排除后 67.97±0.63；对应论文 curriculum-only 配置而非完整 P+R+C，见 ../prc_emo_reproduction/README.md"
+InstructERC + gated review (ours),2026,this work,InstructERC proponent + Qwen2.5-7B verifier,TBD,text,this_work,experiment_pending,"门控可叠加性实验：epoch8 预测转储已归档（../instructerc_reproduction/results/meld_lora10_epoch8_predictions.jsonl），待门控叠加"

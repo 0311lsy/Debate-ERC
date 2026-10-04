@@ -1,0 +1,91 @@
+{
+  "method": "PRC-Emo (Li et al., AAAI 2026)",
+  "local_protocol": {
+    "backbone": "LLaMA2-7B (作者用 Qwen3-8B；本地为与 InstructERC 对齐而替换)",
+    "prompting": "default 简模板（未启用 P 模块的显/隐情绪描述与说话人描述）",
+    "retrieval_kshot": 0,
+    "curriculum": true,
+    "bucket_number": 2,
+    "curriculum_update_epochs": 1,
+    "lora_r": 32,
+    "lr": "3e-4 linear",
+    "epochs": 4,
+    "window": 5,
+    "max_seq_len": 2048,
+    "dataset": "MELD official split, test n=2610",
+    "closest_paper_row": "Table 4 \"w/o S+I+R\" (curriculum-only): 69.34 (Qwen3-8B)"
+  },
+  "paper_reported": {
+    "full_prc_emo_meld_wf1": 70.44,
+    "full_prc_emo_meld_acc": 71.5,
+    "ablation_wo_C_meld_wf1": 70.07,
+    "ablation_wo_R_C_meld_wf1": 69.62,
+    "ablation_wo_P_R_C_meld_wf1": 68.72,
+    "curriculum_only_table4_meld_wf1": 69.34,
+    "source": "docs/PRC_Emo_withAppendix.pdf p.6 Table 2/3/4; 5-seed mean; backbone Qwen3-8B for MELD"
+  },
+  "seeds": {
+    "42": {
+      "test_weighted_f1": 0.6856,
+      "test_macro_f1": 0.5308,
+      "test_accuracy": 0.7004,
+      "dev_weighted_f1": 0.6862,
+      "dev_macro_f1": 0.5755,
+      "dev_accuracy": 0.7006,
+      "n": 2610,
+      "parser": "offline_faithful_rescore (原始 JSON 为修复前 0.0；见 corrected_metrics_seed42.json)",
+      "status": "faithful_offline_rescore",
+      "log": "../../../../PRC-Emo/results/logs/meld_LLaMA2_default_seed42.log",
+      "adapter_dir": "/home/lsy20252770/Agent_Reason/PRC-Emo/results/meld_LLaMA2_ep4_lrs-linear3e-4_0shot_r32_w5_default_seed42_L2048_default/meld_LLaMA2_ep4_lrs-linear3e-4_0shot_r32_w5_default_seed42_L2048_default_final_full_finetune"
+    },
+    "43": {
+      "test_weighted_f1": 0.6708,
+      "test_macro_f1": 0.1118,
+      "test_accuracy": 0.6893,
+      "n": 2610,
+      "parser": "patched_newline_split (code patched 2026-09-29 13:28)",
+      "status": "faithful_under_patched_parser",
+      "log": "../../../../PRC-Emo/results/logs/meld_LLaMA2_default_seed43.log",
+      "adapter_dir": "/home/lsy20252770/Agent_Reason/PRC-Emo/results/meld_LLaMA2_ep4_lrs-linear3e-4_0shot_r32_w5_default_seed43_L2048_default/meld_LLaMA2_ep4_lrs-linear3e-4_0shot_r32_w5_default_seed43_L2048_default_final_full_finetune"
+    },
+    "44": {
+      "test_weighted_f1": 0.6822,
+      "test_macro_f1": 0.1116,
+      "test_accuracy": 0.6935,
+      "n": 2610,
+      "parser": "patched_newline_split (code patched 2026-09-29 13:28)",
+      "status": "faithful_under_patched_parser",
+      "log": "../../../../PRC-Emo/results/logs/meld_LLaMA2_default_seed44.log",
+      "adapter_dir": "/home/lsy20252770/Agent_Reason/PRC-Emo/results/meld_LLaMA2_ep4_lrs-linear3e-4_0shot_r32_w5_default_seed44_L2048_default/meld_LLaMA2_ep4_lrs-linear3e-4_0shot_r32_w5_default_seed44_L2048_default_final_full_finetune"
+    },
+    "45": {
+      "test_weighted_f1": 0.5648,
+      "test_macro_f1": 0.0234,
+      "test_accuracy": 0.5341,
+      "n": 2610,
+      "parser": "patched_newline_split (code patched 2026-09-29 13:28)",
+      "status": "faithful_under_patched_parser",
+      "log": "../../../../PRC-Emo/results/logs/meld_LLaMA2_default_seed45.log",
+      "adapter_dir": "/home/lsy20252770/Agent_Reason/PRC-Emo/results/meld_LLaMA2_ep4_lrs-linear3e-4_0shot_r32_w5_default_seed45_L2048_default/meld_LLaMA2_ep4_lrs-linear3e-4_0shot_r32_w5_default_seed45_L2048_default_final_full_finetune"
+    },
+    "46": {
+      "test_weighted_f1": 0.6801,
+      "test_macro_f1": 0.5246,
+      "test_accuracy": 0.6989,
+      "n": 2610,
+      "parser": "patched_newline_split (code patched 2026-09-29 13:28)",
+      "status": "faithful_under_patched_parser",
+      "log": "../../../../PRC-Emo/results/logs/meld_LLaMA2_default_seed46.log",
+      "adapter_dir": "/home/lsy20252770/Agent_Reason/PRC-Emo/results/meld_LLaMA2_ep4_lrs-linear3e-4_0shot_r32_w5_default_seed46_L2048_default/meld_LLaMA2_ep4_lrs-linear3e-4_0shot_r32_w5_default_seed46_L2048_default_final_full_finetune"
+    }
+  },
+  "aggregate": {
+    "five_seed_mean_weighted_f1": 0.6567,
+    "five_seed_sd_weighted_f1": 0.0517,
+    "median_weighted_f1": 0.6801,
+    "excluding_seed45_mean_weighted_f1": 0.6797,
+    "excluding_seed45_sd_weighted_f1": 0.0063,
+    "seed45_note": "训练正常(loss≈0.31)；LLaMA2 替换基座下 <|im_end|> 新 token 随机初始化且冻结，seed45 的随机初始化导致推理大量退化为无换行乱码串（如 neutralizzazione...），换行截断无法恢复，W-F1=56.48。作者的 Qwen 基座自带 chat template，不存在该病理。"
+  },
+  "extracted_at": "2026-10-04"
+}

@@ -16,7 +16,7 @@
 
 ---
 
-## 历史复现尝试（2026-09-28，已完成但协议错配，不能用于论文）
+## 历史复现（2026-09-28，meld-only 已发布管线；方案 B 下作为"已发布管线复现值"进论文）
 
 | 项 | 内容 |
 |---|---|
@@ -24,7 +24,8 @@
 | 协议 | `--dataset meld`，10 epoch，LoRA dim16/alpha16，lr 2e-4，bs16×ga16，maxlen 1024，seed 42 |
 | 产物 | `Agent_Reason/InstructERC/results/meld_lora_10epoch/preds_for_eval_{0..9}.text` |
 | 结果 | best **W-F1 66.29（epoch 8）**，末轮 66.21；weighted-F1 口径已核实（`f1_score(average='weighted')`），贪心解码（ModelArgs do_sample=False） |
-| vs reported | 差 2.86 点 |
+| 归档证据 | `results/meld_lora10_per_epoch_metrics.json`（10 epoch 指标，best epoch8）、`results/meld_lora10_epoch8_predictions.jsonl`（2610 条 output/target 转储，自算 W-F1 66.26 vs 官方自报 66.294，差 0.03 为标签集处理微差）、`results/epoch8_classification_report.txt` |
+| vs reported | 66.29 vs 69.15 差 2.86 点——**协议不同所致，非复现失败**（见下方审计） |
 
 **当时误判**：把该差距归因为复现失败（见
 `Agent_Reason/InstructERC/docs/failure_analysis_report.md`）。

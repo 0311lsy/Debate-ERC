@@ -1,0 +1,5 @@
+{
+  "note": "原始 result_*.json 中 metrics 因 post_process 未按换行截断而全 0（<|im_end|> 无法被模型生成，见实验日志）。本文件为离线忠实重算值。",
+  "dev":  {"weighted-f1": 0.6862, "macro-f1": 0.5755, "accuracy": 0.7006, "n": 1109},
+  "test": {"weighted-f1": 0.6856, "macro-f1": 0.5308, "accuracy": 0.7004, "n": 2610}
+}

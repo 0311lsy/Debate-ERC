@@ -41,7 +41,10 @@ sampling (three paired seeds, two temperatures; 11 of 12 configurations
 negative, $-0.08$ to $-1.45$), homogeneous self-debate
 ($-0.64$), and a weak 1.5B verifier ($-0.05$)---all fail. The gain replicates across verifier families
 (Qwen2.5-7B, Mistral-7B) and transfers zero-shot to IEMOCAP ($+1.21 \pm 0.42$,
-three seeds, paired $p{=}0.037$) using hyperparameters frozen on MELD. Controlled analysis shows the benefit
+three seeds, paired $p{=}0.037$) using hyperparameters frozen on MELD,
+whereas a frozen cross-register transfer to spontaneous DailyDialog chat is
+negative ($-0.81$, single seed), bounding the transfer claim to matched
+registers. Controlled analysis shows the benefit
 is multiplicative in verifier independence and capability, and concentrates
 in the high-coverage regime where abstention is disallowed.
 \end{abstract}
@@ -320,17 +323,23 @@ model with a near-zero gain, consistent with a diminishing-returns ceiling.
 
 \paragraph{Position relative to published systems.}
 Table~\ref{tab:position} places our numbers against reported MELD results.
-We make no state-of-the-art claim: recent text-only systems report 69.1--69.3
-and multimodal systems 69.8--71.9. Our plain-SFT primary model
-(68.88$\pm$0.41) sits at the level of these reported 7B generative systems,
-and gated review enters the 69.3+ band at $1.27\times$ expected cost. As
-detailed in the table footnote, the strongest reported text-only figure
-(InstructERC 69.15) relies on a training entry point absent from its public
-repository, and its released pipeline reproduces at 66.29 in our hands; our
-positioning therefore rests on reported water levels plus our own paired
-multi-seed numbers, not on cross-implementation significance. The claim is
-an \emph{orthogonal deployment-time mechanism} that can wrap any stronger
-primary model, not a stronger single classifier.
+We make no state-of-the-art claim: the strongest recent text-only system is
+PRC-Emo at 70.44 (AAAI 2026, prompt enrichment plus a dedicated retrieval
+repository plus curriculum learning on Qwen3-8B), while multimodal systems
+reach 69.8--71.9. Two observations bound our claim. First, the plain-LoRA
+ablation reported by PRC-Emo itself is 68.72, and its released-pipeline
+re-runs---together with our reproduction of InstructERC's released pipeline
+(66.29; the 69.15 entry point is absent from its public repository, as
+detailed in the table footnote)---place unenhanced 7--8B generative
+fine-tuning in the 66--69 band that our own plain-SFT primary
+(68.88$\pm$0.41) occupies; the reported 70.44 level is reached through
+training-time enhancements that are complementary to our mechanism.
+Second, our positioning rests on reported water levels plus our own paired
+multi-seed numbers, never on cross-implementation significance. Gated
+review enters the 69.3+ band at $1.27\times$ expected cost; the claim is an
+\emph{orthogonal deployment-time mechanism} that can wrap any stronger
+primary model, including systems with the PRC-Emo-style enhancements,
+rather than a stronger single classifier.
 
 \begin{table*}[t]
 \centering
@@ -358,6 +367,8 @@ Discriminative & EmoTrans (RoBERTa-large) \citep{jian2024emotrans} & 2024 & 68.0
 Generative 7B & InstructERC$^{\S}$ \citep{lei2023instructerc} & 2024 & 69.15 \\
 Generative 7B & \quad InstructERC, released pipeline reproduced by us & 2026 & 66.29 \\
 Generative LLM & CKERC$^{\ddagger}$ & 2024 & 69.27 \\
+Generative 8B & PRC-Emo (full P+R+C) \citep{li2026prcemo} & 2026 & 70.44 \\
+Generative 7B & \quad PRC-Emo, our re-run under substituted backbone$^{\P}$ & 2026 & 65.67 \\
 \textbf{This work} & \textbf{Primary SFT, 8-seed mean} & --- &
 \textbf{68.88$\pm$0.41} \
 \textbf{This work} & \textbf{Gated review, 8-seed mean ($1.27\times$ cost)} & --- &
@@ -381,7 +392,16 @@ $^{\S}$The 69.15 result uses the authors' unified-label training recipe
 (verified 2026-10-04). Under the only released pipeline (MELD-only,
 10-epoch LoRA, seed 42) we reproduce 66.29; the paired same-backbone
 anchor in this paper is therefore our own primary SFT (68.88), trained
-and evaluated under one unified protocol.}
+and evaluated under one unified protocol.
+$^{\P}$Our re-run uses LLaMA2-7B substituted for the authors' Qwen3-8B,
+with the prompt-enrichment (P) and retrieval (R) modules disabled and
+only curriculum learning retained (closest to the paper's
+curriculum-only ablation, 69.34). Five-seed mean 65.67$\pm$5.17
+(seeds 42--46); seed 45 (56.48) degenerated owing to randomly
+initialised, frozen chat-template tokens introduced when a chat format
+is forced onto LLaMA2---a pathology absent with the authors' native
+chat-template backbones. Excluding that seed gives 67.97$\pm$0.63; we
+retain it in the reported mean.}
 \end{table*}
 
 \paragraph{Calibration of the gating signal.}
@@ -477,6 +497,25 @@ on only 647 dev utterances is noisy---two of three seeds select gates with a
 transfers as well: within the triggered bucket (13.6\% of utterances),
 primary-model accuracy is only 49.6\% and review lifts it to 56.5\%,
 mirroring the MELD mechanism.
+\paragraph{Out-of-domain transfer (DailyDialog): a negative result.}
+To probe transfer beyond scripted/acted corpora, we apply the unchanged
+MELD-trained models and the frozen rule ($\tau{=}0.65$, margin $0.05$, no
+target-domain tuning) to the 7{,}740-utterance DailyDialog test split, whose
+label set is mapped onto the seven MELD classes. The primary model transfers
+well on its own (logprob-argmax weighted-F1 $0.8236$; greedy $0.7913$), but
+the gated mechanism does \emph{not} transfer its benefit: the MELD-trained
+reviewer is weaker on this distribution ($0.7895$), and gating lowers
+weighted-F1 to $0.8155$ ($\Delta=-0.81$; 136 rescues vs.\ 304 harms), while
+invoking the reviewer on $14.97\%$ of utterances ($6.56\%$ adopted) at
+$1.15\times$ expected cost. DailyDialog is spontaneous chat heavily
+dominated by neutral utterances rather than balanced acted emotion, so both
+the confidence calibration that routes errors and the reviewer's relative
+strength shift out of domain. This is single-seed evidence and we make no
+significance claim, but we report it in full because it bounds the claim:
+the frozen gate generalises across \emph{datasets within the same register}
+(MELD$\to$IEMOCAP) but should not be expected to generalise across
+\emph{registers} without target-domain calibration of the gate and a
+reviewer verified to remain comparably capable.
 
 \subsection{Cost--accuracy Pareto}
 %% Fig.2：tau 扫描 0.4--0.9 构成前沿，tau=0.65 居峰（1.26x, 69.64）
@@ -627,9 +666,12 @@ multi-seed extension of the remaining single-run controls is future work.
 performed English speech (TV sitcom and acted sessions), whereas the
 illustrative contact-center and affective-monitoring settings involve
 ASR-transcribed spontaneous speech, different registers and noise, and
-different label taxonomies. We provide no industrial-domain evaluation, and
-the deployment projections in Section~6.2 are extrapolations, not
-measurements; out-of-domain validation is required before deployment claims.
+different label taxonomies. A frozen zero-tuning transfer to spontaneous
+DailyDialog chat is negative ($-0.81$ W-F1, Section~5.3), so the
+cross-dataset evidence supports same-register transfer only; the deployment
+projections in Section~6.2 are extrapolations, and target-domain gate
+calibration plus reviewer verification are required before cross-register
+deployment claims.
 \label{sec:limitations}
 
 \section{Conclusion}

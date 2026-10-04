@@ -1,0 +1,81 @@
+{
+  "method": "InstructERC",
+  "protocol": "MELD-only Plain (main_new.py), LLaMA2-7B, LoRA r=16, 10 epochs, seed 42, greedy decoding",
+  "note_vs_reported": "论文 69.15 来自 unified-label Mixed 协议（main_Unilabel.py，官方未发布），与本复现协议不同",
+  "source_artifact_dir": "/home/lsy20252770/Agent_Reason/InstructERC/results/meld_lora_10epoch",
+  "source_pred_files": [
+    "preds_for_eval_0.text",
+    "preds_for_eval_1.text",
+    "preds_for_eval_2.text",
+    "preds_for_eval_3.text",
+    "preds_for_eval_4.text",
+    "preds_for_eval_5.text",
+    "preds_for_eval_6.text",
+    "preds_for_eval_7.text",
+    "preds_for_eval_8.text",
+    "preds_for_eval_9.text"
+  ],
+  "per_epoch": [
+    {
+      "epoch": 0,
+      "test_accuracy": 0.6046,
+      "test_weighted_f1": 0.6063
+    },
+    {
+      "epoch": 1,
+      "test_accuracy": 0.6241,
+      "test_weighted_f1": 0.6167
+    },
+    {
+      "epoch": 2,
+      "test_accuracy": 0.6609,
+      "test_weighted_f1": 0.6432
+    },
+    {
+      "epoch": 3,
+      "test_accuracy": 0.6682,
+      "test_weighted_f1": 0.6506
+    },
+    {
+      "epoch": 4,
+      "test_accuracy": 0.6663,
+      "test_weighted_f1": 0.6612
+    },
+    {
+      "epoch": 5,
+      "test_accuracy": 0.6694,
+      "test_weighted_f1": 0.6584
+    },
+    {
+      "epoch": 6,
+      "test_accuracy": 0.6498,
+      "test_weighted_f1": 0.6522
+    },
+    {
+      "epoch": 7,
+      "test_accuracy": 0.6659,
+      "test_weighted_f1": 0.6592
+    },
+    {
+      "epoch": 8,
+      "test_accuracy": 0.6732,
+      "test_weighted_f1": 0.6629
+    },
+    {
+      "epoch": 9,
+      "test_accuracy": 0.6644,
+      "test_weighted_f1": 0.6621
+    }
+  ],
+  "best_epoch": 8,
+  "best_test_weighted_f1": 0.6629,
+  "best_test_accuracy": 0.6732,
+  "extracted_at": "2026-10-04",
+  "archive_recomputed_best_epoch": {
+    "test_weighted_f1": 0.6626,
+    "test_accuracy": 0.6724,
+    "source": "meld_lora10_epoch8_predictions.jsonl 的 output/target 字段，sklearn weighted-F1",
+    "delta_vs_official_self_report": -0.0003,
+    "note": "差 -0.0003，源于标签集/规范化处理微差；以官方自报 66.294 为引用值（论文取 66.29）"
+  }
+}
