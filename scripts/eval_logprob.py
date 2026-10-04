@@ -68,11 +68,13 @@ def build_batches(prompts: list[str], labels: list[str], tokenizer,
     每个 checkpoint 的 adapter 只影响前向权重、不改变输入，因此 tokenize /
     拼接 / padding / 位置索引只做一次（原实现每 checkpoint 重复一遍是主要耗时）。
     """
-    space_id = tokenizer.encode(" neutral", add_special_tokens=False)[0]
+    # 完整 " label" 序列、不剥离首 token——与 backbone.score_labels 严格同口径：
+    # LLaMA2 下首 token 为公共空格 29871（同 prompt 七候选的常数偏移，softmax
+    # 后消失，剥不剥概率等价）；Qwen BPE 下 " neutral" 是整词单 token，剥离
+    # 会直接清空导致 assert 失败（DailyDialog critic 段事故修复）。
     label_tok: dict[str, list[int]] = {}
     for lb in labels:
         ids = tokenizer.encode(f" {lb}", add_special_tokens=False)
-        ids = ids[1:] if ids and ids[0] == space_id else ids
         assert ids, f"标签 {lb} 内容 token 为空"
         label_tok[lb] = ids
 
