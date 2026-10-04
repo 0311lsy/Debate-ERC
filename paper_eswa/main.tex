@@ -37,7 +37,8 @@ independent seeds, gated heterogeneous review improves weighted-F1 by
 $+0.49 \pm 0.46$ percentage points (paired $t$: $p=0.019$; bootstrap 95\%
 CI $[+0.18, +0.77]$; Cohen's $d_z=1.07$) at an expected cost of only
 $1.27\times$ forward passes, while cheaper alternatives---self-consistency
-sampling at two temperatures ($-0.36$ to $-2.00$), homogeneous self-debate
+sampling (three paired seeds, two temperatures; 11 of 12 configurations
+negative, $-0.08$ to $-1.45$), homogeneous self-debate
 ($-0.64$), and a weak 1.5B verifier ($-0.05$)---all fail. The gain replicates across verifier families
 (Qwen2.5-7B, Mistral-7B) and transfers zero-shot to IEMOCAP ($+1.21 \pm 0.42$,
 three seeds, paired $p{=}0.037$) using hyperparameters frozen on MELD. Controlled analysis shows the benefit
@@ -404,12 +405,18 @@ weighted-F1 by $-0.64$: the two copies agree on 91.3\% of utterances,
 including their mistakes, so extra compute reproduces rather than corrects
 the errors. \emph{Self-consistency} sampling of the primary model
 (top-$p$ 0.9, majority vote of 3/5 samples, ties broken by label posteriors)
-degrades weighted-F1 at $3$--$5\times$ forward-pass budget at both
-temperatures: $-2.00$/$-1.55$ at $T{=}0.7$ and $-0.65$/$-0.36$ at
-$T{=}0.3$. Lower temperature halves the damage---part of the high-temperature
-loss is sampling noise---but the best SC variant (68.24 at $5\times$ cost)
-still underperforms greedy decoding (68.60 at $1\times$) and falls 1.39
-points short of gated review (69.63 at $1.27\times$). The failure is
+was evaluated as a strictly paired three-seed control (seeds 42--44,
+same-seed greedy baseline, $n{=}2610$ each) at two temperatures. Mean
+weighted-F1 changes versus same-seed greedy are uniformly negative:
+$-1.45 \pm 0.57$ (SC@3, $T{=}0.7$, paired $p{=}0.048$, 3/3 seeds negative)
+and $-0.98 \pm 0.59$ (SC@5) at $T{=}0.7$, narrowing to $-0.33 \pm 0.30$
+and $-0.08 \pm 0.27$ at $T{=}0.3$ (11 of 12 seed$\times$configuration cells
+negative; the single positive cell is $+0.17$ at $5\times$ cost).
+Lower temperature halves the damage---part of the high-temperature loss is
+sampling noise---but as temperature approaches greedy decoding, SC merely
+becomes harmless rather than beneficial: the best SC variant (68.70 at
+$5\times$ cost) still matches rather than beats greedy (68.78 at $1\times$)
+and trails gated review (69.33, $+0.55$, at $1.27\times$). The failure is
 structural rather than temperature-driven: same-parameter samples share the
 classifier's correlated blind spots on a short-label task. A \emph{weak 1.5B reviewer} has genuine
 independence (56.1\% agreement) but no parity in capability (it degenerates
@@ -595,12 +602,14 @@ models rather than a cleverer gate.
 test instances); high-stakes minority classes should be routed to the
 abstention branch. (ii) The Mistral replication confounds independence with
 capability (Section~5.3); a factorial (capability $\times$ independence)
-sweep is future work. (iii) Self-consistency was tested at both $T{=}0.7$
-and $T{=}0.3$ and is negative at both; the remaining untested point is
-near-greedy temperature $T{\to}0$, where sampling collapses toward greedy
-decoding and SC can add nothing by construction.
-(iv) The Mistral replication and the self-consistency controls are
-single-seed (the IEMOCAP transfer and hint ablation are now three-seed);
+sweep is future work. (iii) Self-consistency was tested as a three-seed paired control at both
+$T{=}0.7$ and $T{=}0.3$ and is negative in 11 of 12 configurations; the
+remaining untested point is near-greedy temperature $T{\to}0$, where
+sampling collapses toward greedy decoding and SC can add nothing by
+construction.
+(iv) The Mistral replication, homogeneous self-debate, weak-reviewer, and
+$\tau$-sweep controls remain single-seed (the main result, IEMOCAP
+transfer, hint ablation, and self-consistency controls are multi-seed);
 multi-seed extension of the remaining single-run controls is future work.
 (v) \emph{Application-domain gap}: both training corpora are scripted or
 performed English speech (TV sitcom and acted sessions), whereas the

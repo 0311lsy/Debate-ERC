@@ -134,7 +134,7 @@ def main() -> int:
     summary: dict = {"k": args.k, "seed": args.seed, "sampling": sample_kw,
                      "n_test": len(test)}
     for name, key in [("greedy", "y_a"), ("sc3", "sc3"), ("sc5", "sc5")]:
-        if key == "y_a" and base_rows is None:
+        if key == "y_a" and base_by_idx is None:
             continue
         m = compute_metrics([r[key] for r in recs], golds, labels)
         summary[name] = {"wf1": round(m["wf1"], 6), "macro_f1": round(m["macro_f1"], 6),

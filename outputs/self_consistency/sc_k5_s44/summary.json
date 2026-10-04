@@ -1,0 +1,21 @@
+{
+  "k": 5,
+  "seed": 44,
+  "sampling": {
+    "max_new_tokens": 8,
+    "do_sample": true,
+    "temperature": 0.7,
+    "top_p": 0.9
+  },
+  "n_test": 2610,
+  "sc3": {
+    "wf1": 0.679007,
+    "macro_f1": 0.530493,
+    "accuracy": 0.686973
+  },
+  "sc5": {
+    "wf1": 0.683815,
+    "macro_f1": 0.542087,
+    "accuracy": 0.691954
+  }
+}
