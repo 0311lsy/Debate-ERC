@@ -1,0 +1,210 @@
+{
+  "main_direction_LLaMAprop_Qwencritic": {
+    "seeds": [
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49
+    ],
+    "delta_wf1_per_seed": [
+      1.04,
+      -0.27,
+      0.9,
+      0.43,
+      0.56,
+      -0.1,
+      0.74,
+      0.65
+    ],
+    "mean": 0.494,
+    "sd": 0.461,
+    "t": 3.03,
+    "n_positive": 6,
+    "base_mean": 68.88,
+    "gated_mean": 69.37,
+    "confirmatory_s45_49": {
+      "per_seed": [
+        0.43,
+        0.56,
+        -0.1,
+        0.74,
+        0.65
+      ],
+      "note": "未参与 pooled-dev 阈值校准"
+    }
+  },
+  "role_reversal_Qwenprop_LLaMAcritic": {
+    "per_seed": [
+      {
+        "seed": 42,
+        "base": 68.73,
+        "gated": 69.77,
+        "delta": 1.03,
+        "trigger_rate": 0.2579,
+        "rescue": 86,
+        "harm": 53
+      },
+      {
+        "seed": 43,
+        "base": 68.61,
+        "gated": 69.81,
+        "delta": 1.2,
+        "trigger_rate": 0.2513,
+        "rescue": 85,
+        "harm": 46
+      },
+      {
+        "seed": 44,
+        "base": 68.82,
+        "gated": 69.8,
+        "delta": 0.98,
+        "trigger_rate": 0.251,
+        "rescue": 73,
+        "harm": 42
+      },
+      {
+        "seed": 45,
+        "base": 68.42,
+        "gated": 69.46,
+        "delta": 1.04,
+        "trigger_rate": 0.2548,
+        "rescue": 75,
+        "harm": 42
+      },
+      {
+        "seed": 46,
+        "base": 68.37,
+        "gated": 68.69,
+        "delta": 0.32,
+        "trigger_rate": 0.2307,
+        "rescue": 67,
+        "harm": 54
+      },
+      {
+        "seed": 47,
+        "base": 68.59,
+        "gated": 69.29,
+        "delta": 0.7,
+        "trigger_rate": 0.2498,
+        "rescue": 77,
+        "harm": 51
+      },
+      {
+        "seed": 48,
+        "base": 68.98,
+        "gated": 69.22,
+        "delta": 0.24,
+        "trigger_rate": 0.2257,
+        "rescue": 49,
+        "harm": 41
+      },
+      {
+        "seed": 49,
+        "base": 68.87,
+        "gated": 69.0,
+        "delta": 0.14,
+        "trigger_rate": 0.2456,
+        "rescue": 81,
+        "harm": 64
+      }
+    ],
+    "base_mean": 68.67,
+    "gated_mean": 69.38,
+    "delta_mean": 0.706,
+    "delta_sd": 0.418,
+    "t": 4.781,
+    "n_positive": 8,
+    "cohen_dz": 1.69,
+    "rescue_total": 593,
+    "harm_total": 393,
+    "trigger_mean": 0.2459,
+    "vs_main_direction": {
+      "per_seed_delta_diff": [
+        -0.01,
+        1.47,
+        0.08,
+        0.61,
+        -0.24,
+        0.8,
+        -0.5,
+        -0.51
+      ],
+      "mean_diff": 0.213,
+      "t_paired": 0.867,
+      "interpretation": "差值≈0 则支持角色互换对称性"
+    }
+  },
+  "hint_vs_nohint": {
+    "hint_delta_per_seed": [
+      1.01,
+      -0.12,
+      0.66,
+      0.43,
+      0.56,
+      -0.1,
+      0.74,
+      0.65
+    ],
+    "nohint_delta_per_seed": [
+      0.84,
+      0.58,
+      0.73,
+      0.52,
+      0.77,
+      -0.42,
+      1.07,
+      0.86
+    ],
+    "hint_mean_sd_t": [
+      0.479,
+      0.399,
+      3.393
+    ],
+    "nohint_mean_sd_t": [
+      0.619,
+      0.453,
+      3.864
+    ],
+    "nohint_minus_hint_per_seed": [
+      -0.17,
+      0.7,
+      0.07,
+      0.09,
+      0.21,
+      -0.32,
+      0.33,
+      0.21
+    ],
+    "paired_mean_diff": 0.14,
+    "paired_t": 1.276,
+    "cohen_dz": 0.45,
+    "nohint_better_seeds": [
+      43,
+      44,
+      45,
+      46,
+      48,
+      49
+    ],
+    "decision_note": "配对差显著>0 才支持换主表；否则保留预注册 hint 主表并改写消融段"
+  },
+  "B5_halfdata_critic": {
+    "train_summary": {
+      "steps": 942,
+      "final_loss": 0.26898780989605053,
+      "epochs_done": 6,
+      "eval_history": []
+    },
+    "half_delta": -0.3,
+    "half_gated_wf1": 68.3,
+    "half_base_wf1": 68.6,
+    "half_trigger": 0.2625,
+    "full_delta_s42": 1.01,
+    "half_minus_full": -1.31,
+    "note": "半数据与全量同 proponent(s42)，直接可比；单种子探索性对照"
+  }
+}

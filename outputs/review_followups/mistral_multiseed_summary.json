@@ -1,0 +1,109 @@
+{
+  "n_seeds": 8,
+  "seeds": [
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49
+  ],
+  "per_seed": [
+    {
+      "seed": 42,
+      "base_wf1": 68.595,
+      "gated_wf1": 68.881,
+      "delta": 0.286,
+      "trigger_pct": 26.25,
+      "rescue": 80,
+      "harm": 60,
+      "n_flip": 194
+    },
+    {
+      "seed": 43,
+      "base_wf1": 68.974,
+      "gated_wf1": 69.037,
+      "delta": 0.063,
+      "trigger_pct": 25.98,
+      "rescue": 82,
+      "harm": 67,
+      "n_flip": 203
+    },
+    {
+      "seed": 44,
+      "base_wf1": 68.759,
+      "gated_wf1": 69.193,
+      "delta": 0.434,
+      "trigger_pct": 27.78,
+      "rescue": 94,
+      "harm": 68,
+      "n_flip": 214
+    },
+    {
+      "seed": 45,
+      "base_wf1": 69.138,
+      "gated_wf1": 68.318,
+      "delta": -0.82,
+      "trigger_pct": 26.48,
+      "rescue": 77,
+      "harm": 83,
+      "n_flip": 230
+    },
+    {
+      "seed": 46,
+      "base_wf1": 68.826,
+      "gated_wf1": 69.114,
+      "delta": 0.289,
+      "trigger_pct": 25.86,
+      "rescue": 84,
+      "harm": 61,
+      "n_flip": 207
+    },
+    {
+      "seed": 47,
+      "base_wf1": 69.779,
+      "gated_wf1": 69.518,
+      "delta": -0.261,
+      "trigger_pct": 27.24,
+      "rescue": 84,
+      "harm": 74,
+      "n_flip": 213
+    },
+    {
+      "seed": 48,
+      "base_wf1": 68.349,
+      "gated_wf1": 69.228,
+      "delta": 0.879,
+      "trigger_pct": 27.43,
+      "rescue": 108,
+      "harm": 67,
+      "n_flip": 232
+    },
+    {
+      "seed": 49,
+      "base_wf1": 68.606,
+      "gated_wf1": 69.139,
+      "delta": 0.533,
+      "trigger_pct": 24.79,
+      "rescue": 86,
+      "harm": 63,
+      "n_flip": 206
+    }
+  ],
+  "base_wf1_mean": 68.878,
+  "gated_wf1_mean": 69.053,
+  "delta_mean": 0.175,
+  "delta_sd": 0.522,
+  "n_positive": 6,
+  "n_negative": 2,
+  "paired_t": 0.95,
+  "paired_t_p": 0.3738,
+  "wilcoxon_exact_p": 0.25,
+  "sign_exact_two_sided_p": 0.2891,
+  "trigger_pct_mean": 26.48,
+  "total_rescue": 695,
+  "total_harm": 543,
+  "rescue_harm_ratio": 1.28
+}

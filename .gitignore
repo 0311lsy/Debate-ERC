@@ -4,6 +4,13 @@ __pycache__/
 wandb/
 outputs/runs/
 outputs/cache/
+outputs/hetero_critic/
+outputs/instructerc_adapter_ep8/
+outputs/instructerc_gated/
+outputs/instructerc_gated_v2/
+paper_eswa/main.aux
+paper_eswa/main.bbl
+paper_eswa/main.blg
 *.pt
 *.bin
 *.safetensors

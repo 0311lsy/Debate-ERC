@@ -85,3 +85,26 @@
 注意：历史 meld-only 模型 66.29 弱于自训 m0 68.88，**不能**充当"更强
 proponent"角色，故 P3 必须等方案 A 的 unified 模型（若接近 69）才有论证
 价值；对 66.29 模型做叠加只具探索意义。
+
+### P3 执行结果（2026-10-05，v2 修正版）
+
+- 脚本：`scripts/instructerc_gate_stacking_v2.py`（greedy decode 取 y_a，
+  生成标签 token 平均 logprob 取 p_a；critic = Qwen2.5-7B s42）
+- 基线：test W-F1 66.47 / dev 64.51（与官方 66.29 复现口径一致）
+- **R1 冻结 margin 规则（τ=0.65, m=0.05）**：+0.11，触发率仅 2.7%
+  （生成置信度中位数 0.9999 严重过自信）→ 零调参不可移植
+- **R3 margin 规则仅 τ dev 重校准（τ=0.8）**：+0.05，触发 6.1%，
+  rescue/harm 11/10 → 跨尺度比较 p_b>p_a+m 在 p_a≈1 时不可满足
+- **R2 双阈值 dev 校准（τ_a=0.995, τ_b=0.60）→ test**：+1.33
+  （66.47→67.79），触发 23.8%，rescue/harm 70/35（2:1），成本 1.24×
+- 结论：机制可移植，门控参数不可移植——阈值编码了 primary 的置信度
+  语义，换管线必须在 dev 上重校准；仲裁须用各自模型的阈值而非跨尺度
+  margin。论文已按此口径软化可叠加性主张（§5.3 InstructERC 段 + 摘要 +
+  贡献条 + Conclusion）。
+- 事故记录：v1（teacher-forced 打分，base 32.78）与 v2 第一次运行
+  （greedy 全 neutral）均因 `instructerc_extract_adapter.py` 提取 LoRA 时
+  键名处理错误导致 adapter 未加载（第一次 strip 了 "base_model.model."
+  前缀；第二次保留了 ".default." 段，而 PEFT 加载时
+  `_insert_adapter_name_into_state_dict` 会再插入 adapter 名造成
+  "default.default" 双写全 miss）。正确格式：保留前缀、strip
+  ".default." 段。验证方法：加载后检查 lora_B 权重非零（96/96）。

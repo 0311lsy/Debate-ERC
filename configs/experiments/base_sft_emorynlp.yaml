@@ -1,0 +1,9 @@
+# EmoryNLP（EmotionLines, Friends）泛化：与 MELD m0_sft 完全同配方（裸 SFT，LoRA r64/a128，3 epoch），
+# 仅换数据集与标签空间（7 类：neutral/joyful/mad/peaceful/sad/powerful/scared）。
+# synthesis 默认关闭。标签空间与 MELD 不相交，仅做域内 dev 标定，不做冻结门控迁移。
+extends: ../base.yaml
+name: base_sft
+data:
+  dataset: emorynlp
+  raw_path: /home/lsy20252770/Agent_Reason/PRC-Emo/data/raw
+  history_window: 5

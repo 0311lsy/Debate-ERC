@@ -1,0 +1,182 @@
+{
+  "proponent": "InstructERC ep8 (W-F1 66.47 test / 64.51 dev)",
+  "critic_seeds": [
+    42,
+    43,
+    44
+  ],
+  "per_seed": {
+    "42": {
+      "base_test_wf1": 66.47,
+      "base_dev_wf1": 64.51,
+      "R1_frozen_margin": {
+        "wf1": 66.58,
+        "delta": 0.11,
+        "trigger_rate": 0.0268,
+        "n_flip": 19,
+        "rescue": 8,
+        "harm": 5
+      },
+      "R2_two_threshold_devcal": {
+        "wf1": 68.78,
+        "delta": 2.31,
+        "trigger_rate": 0.3467,
+        "n_flip": 262,
+        "rescue": 127,
+        "harm": 68,
+        "tau_a_dev": 0.9995,
+        "tau_b_dev": 0.5,
+        "dev_wf1": 67.8
+      },
+      "R3_margin_dev_tau": {
+        "wf1": 66.52,
+        "delta": 0.05,
+        "trigger_rate": 0.0609,
+        "n_flip": 28,
+        "rescue": 11,
+        "harm": 10,
+        "tau_dev_selected": 0.8
+      }
+    },
+    "43": {
+      "base_test_wf1": 66.47,
+      "base_dev_wf1": 64.51,
+      "R1_frozen_margin": {
+        "wf1": 66.62,
+        "delta": 0.15,
+        "trigger_rate": 0.0268,
+        "n_flip": 21,
+        "rescue": 8,
+        "harm": 4
+      },
+      "R2_two_threshold_devcal": {
+        "wf1": 68.59,
+        "delta": 2.12,
+        "trigger_rate": 0.3467,
+        "n_flip": 257,
+        "rescue": 120,
+        "harm": 72,
+        "tau_a_dev": 0.9995,
+        "tau_b_dev": 0.5,
+        "dev_wf1": 68.25
+      },
+      "R3_margin_dev_tau": {
+        "wf1": 66.82,
+        "delta": 0.36,
+        "trigger_rate": 0.1372,
+        "n_flip": 35,
+        "rescue": 17,
+        "harm": 8,
+        "tau_dev_selected": 0.95
+      }
+    },
+    "44": {
+      "base_test_wf1": 66.47,
+      "base_dev_wf1": 64.51,
+      "R1_frozen_margin": {
+        "wf1": 66.53,
+        "delta": 0.06,
+        "trigger_rate": 0.0268,
+        "n_flip": 22,
+        "rescue": 7,
+        "harm": 5
+      },
+      "R2_two_threshold_devcal": {
+        "wf1": 68.11,
+        "delta": 1.64,
+        "trigger_rate": 0.3042,
+        "n_flip": 345,
+        "rescue": 147,
+        "harm": 102,
+        "tau_a_dev": 0.999,
+        "tau_b_dev": 0.4,
+        "dev_wf1": 67.0
+      },
+      "R3_margin_dev_tau": {
+        "wf1": 66.78,
+        "delta": 0.31,
+        "trigger_rate": 0.0973,
+        "n_flip": 38,
+        "rescue": 17,
+        "harm": 8,
+        "tau_dev_selected": 0.9
+      }
+    }
+  },
+  "summary": {
+    "R1_frozen_margin": {
+      "delta_wf1": {
+        "mean": 0.107,
+        "sd": 0.045,
+        "values": [
+          0.11,
+          0.15,
+          0.06
+        ]
+      },
+      "trigger_rate": {
+        "mean": 0.027,
+        "sd": 0.0,
+        "values": [
+          0.03,
+          0.03,
+          0.03
+        ]
+      }
+    },
+    "R2_two_threshold_devcal": {
+      "delta_wf1": {
+        "mean": 2.023,
+        "sd": 0.345,
+        "values": [
+          2.31,
+          2.12,
+          1.64
+        ]
+      },
+      "trigger_rate": {
+        "mean": 0.333,
+        "sd": 0.025,
+        "values": [
+          0.35,
+          0.35,
+          0.3
+        ]
+      }
+    },
+    "R3_margin_dev_tau": {
+      "delta_wf1": {
+        "mean": 0.24,
+        "sd": 0.166,
+        "values": [
+          0.05,
+          0.36,
+          0.31
+        ]
+      },
+      "trigger_rate": {
+        "mean": 0.098,
+        "sd": 0.038,
+        "values": [
+          0.06,
+          0.14,
+          0.1
+        ]
+      }
+    },
+    "rescue_harm_total": {
+      "R1_frozen_margin": {
+        "rescue": 23,
+        "harm": 14
+      },
+      "R2_two_threshold_devcal": {
+        "rescue": 394,
+        "harm": 242
+      },
+      "R3_margin_dev_tau": {
+        "rescue": 45,
+        "harm": 26
+      }
+    }
+  }
+}

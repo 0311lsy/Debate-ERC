@@ -1,0 +1,647 @@
+{
+  "n_seeds": 8,
+  "seeds": [
+    "42",
+    "43",
+    "44",
+    "45",
+    "46",
+    "47",
+    "48",
+    "49"
+  ],
+  "base_wf1_mean_sd": [
+    68.878,
+    0.437
+  ],
+  "boundary_error_pct_mean_sd": [
+    62.438,
+    0.731
+  ],
+  "critic_correct_on_swallowed": [
+    20.037,
+    3.95
+  ],
+  "critic_also_neutral_on_swallowed": [
+    67.825,
+    5.609
+  ],
+  "critic_correct_on_falsealarm": [
+    35.212,
+    5.385
+  ],
+  "critic_correct_on_emoconfusion": [
+    18.037,
+    2.261
+  ],
+  "veto_neu2emo_delta": [
+    0.552,
+    0.119
+  ],
+  "veto_emo2neu_delta": [
+    0.29,
+    0.155
+  ],
+  "three_state_best_wf1": [
+    69.197,
+    0.279
+  ],
+  "three_state_best_esc": [
+    23.837,
+    7.373
+  ],
+  "three_state_le130_wf1": [
+    69.193,
+    0.283
+  ],
+  "three_state_le130_esc": [
+    22.812,
+    5.893
+  ],
+  "current_gate_wf1": [
+    69.368,
+    0.341
+  ],
+  "current_gate_trigger": [
+    27.05,
+    1.795
+  ],
+  "per_seed": [
+    {
+      "seed": "42",
+      "n": 2610,
+      "base_wf1": 68.595,
+      "base_acc": 69.46,
+      "error_split": {
+        "swallowed_emo_to_neu": 315,
+        "falsealarm_neu_to_emo": 188,
+        "emo_to_emo": 294,
+        "total": 797,
+        "boundary_pct": 63.1
+      },
+      "critic": {
+        "overall_acc": 68.35,
+        "on_swallowed": {
+          "subset": "swallowed",
+          "n": 315,
+          "critic_correct_pct": 18.1,
+          "critic_also_neutral_pct": 69.8
+        },
+        "on_falsealarm": {
+          "subset": "falsealarm",
+          "n": 188,
+          "critic_correct_pct": 38.8,
+          "critic_says_neutral_pct": 38.8
+        },
+        "on_emoconfusion": {
+          "subset": "emoconf",
+          "n": 294,
+          "critic_correct_pct": 16.7,
+          "critic_agrees_error_pct": 55.1
+        }
+      },
+      "swallowed_by_gold_class": {
+        "joyful": 83,
+        "sadness": 73,
+        "anger": 81,
+        "surprise": 38,
+        "disgust": 21,
+        "fear": 19
+      },
+      "veto_optimistic": {
+        "neu2emo_best": {
+          "th": 0.53,
+          "wf1": 69.131,
+          "flips": 83,
+          "delta": 0.536
+        },
+        "emo2neu_best": {
+          "th": 0.69,
+          "wf1": 68.736,
+          "flips": 36,
+          "delta": 0.141
+        }
+      },
+      "three_state_best": {
+        "tn": 0.55,
+        "te": 0.6,
+        "wf1": 69.364,
+        "escalate_pct": 19.8
+      },
+      "three_state_best_le130": {
+        "tn": 0.55,
+        "te": 0.6,
+        "wf1": 69.364,
+        "escalate_pct": 19.8
+      },
+      "current_gate": {
+        "wf1": 69.606,
+        "trigger_pct": 30.8
+      }
+    },
+    {
+      "seed": "43",
+      "n": 2610,
+      "base_wf1": 68.974,
+      "base_acc": 69.62,
+      "error_split": {
+        "swallowed_emo_to_neu": 284,
+        "falsealarm_neu_to_emo": 207,
+        "emo_to_emo": 302,
+        "total": 793,
+        "boundary_pct": 61.9
+      },
+      "critic": {
+        "overall_acc": 66.25,
+        "on_swallowed": {
+          "subset": "swallowed",
+          "n": 284,
+          "critic_correct_pct": 25.4,
+          "critic_also_neutral_pct": 59.2
+        },
+        "on_falsealarm": {
+          "subset": "falsealarm",
+          "n": 207,
+          "critic_correct_pct": 28.0,
+          "critic_says_neutral_pct": 28.0
+        },
+        "on_emoconfusion": {
+          "subset": "emoconf",
+          "n": 302,
+          "critic_correct_pct": 19.9,
+          "critic_agrees_error_pct": 57.3
+        }
+      },
+      "swallowed_by_gold_class": {
+        "joyful": 76,
+        "sadness": 66,
+        "anger": 70,
+        "surprise": 35,
+        "disgust": 22,
+        "fear": 15
+      },
+      "veto_optimistic": {
+        "neu2emo_best": {
+          "th": 0.68,
+          "wf1": 69.6,
+          "flips": 56,
+          "delta": 0.626
+        },
+        "emo2neu_best": {
+          "th": 0.61,
+          "wf1": 69.145,
+          "flips": 42,
+          "delta": 0.171
+        }
+      },
+      "three_state_best": {
+        "tn": 0.5,
+        "te": 0.8,
+        "wf1": 68.984,
+        "escalate_pct": 29.5
+      },
+      "three_state_best_le130": {
+        "tn": 0.5,
+        "te": 0.8,
+        "wf1": 68.984,
+        "escalate_pct": 29.5
+      },
+      "current_gate": {
+        "wf1": 68.703,
+        "trigger_pct": 26.0
+      }
+    },
+    {
+      "seed": "44",
+      "n": 2610,
+      "base_wf1": 68.759,
+      "base_acc": 69.46,
+      "error_split": {
+        "swallowed_emo_to_neu": 306,
+        "falsealarm_neu_to_emo": 192,
+        "emo_to_emo": 299,
+        "total": 797,
+        "boundary_pct": 62.5
+      },
+      "critic": {
+        "overall_acc": 68.39,
+        "on_swallowed": {
+          "subset": "swallowed",
+          "n": 306,
+          "critic_correct_pct": 19.0,
+          "critic_also_neutral_pct": 69.6
+        },
+        "on_falsealarm": {
+          "subset": "falsealarm",
+          "n": 192,
+          "critic_correct_pct": 40.1,
+          "critic_says_neutral_pct": 40.1
+        },
+        "on_emoconfusion": {
+          "subset": "emoconf",
+          "n": 299,
+          "critic_correct_pct": 19.7,
+          "critic_agrees_error_pct": 55.2
+        }
+      },
+      "swallowed_by_gold_class": {
+        "joyful": 85,
+        "sadness": 67,
+        "anger": 81,
+        "surprise": 36,
+        "disgust": 21,
+        "fear": 16
+      },
+      "veto_optimistic": {
+        "neu2emo_best": {
+          "th": 0.65,
+          "wf1": 69.137,
+          "flips": 55,
+          "delta": 0.378
+        },
+        "emo2neu_best": {
+          "th": 0.56,
+          "wf1": 69.256,
+          "flips": 87,
+          "delta": 0.497
+        }
+      },
+      "three_state_best": {
+        "tn": 0.55,
+        "te": 0.5,
+        "wf1": 69.407,
+        "escalate_pct": 14.9
+      },
+      "three_state_best_le130": {
+        "tn": 0.55,
+        "te": 0.5,
+        "wf1": 69.407,
+        "escalate_pct": 14.9
+      },
+      "current_gate": {
+        "wf1": 69.656,
+        "trigger_pct": 27.8
+      }
+    },
+    {
+      "seed": "45",
+      "n": 2610,
+      "base_wf1": 69.138,
+      "base_acc": 70.0,
+      "error_split": {
+        "swallowed_emo_to_neu": 309,
+        "falsealarm_neu_to_emo": 180,
+        "emo_to_emo": 294,
+        "total": 783,
+        "boundary_pct": 62.5
+      },
+      "critic": {
+        "overall_acc": 67.16,
+        "on_swallowed": {
+          "subset": "swallowed",
+          "n": 309,
+          "critic_correct_pct": 22.7,
+          "critic_also_neutral_pct": 63.1
+        },
+        "on_falsealarm": {
+          "subset": "falsealarm",
+          "n": 180,
+          "critic_correct_pct": 29.4,
+          "critic_says_neutral_pct": 29.4
+        },
+        "on_emoconfusion": {
+          "subset": "emoconf",
+          "n": 294,
+          "critic_correct_pct": 20.4,
+          "critic_agrees_error_pct": 54.1
+        }
+      },
+      "swallowed_by_gold_class": {
+        "joyful": 89,
+        "sadness": 75,
+        "anger": 74,
+        "surprise": 37,
+        "disgust": 20,
+        "fear": 14
+      },
+      "veto_optimistic": {
+        "neu2emo_best": {
+          "th": 0.71,
+          "wf1": 69.699,
+          "flips": 43,
+          "delta": 0.561
+        },
+        "emo2neu_best": {
+          "th": 0.73,
+          "wf1": 69.363,
+          "flips": 19,
+          "delta": 0.225
+        }
+      },
+      "three_state_best": {
+        "tn": 0.75,
+        "te": 0.75,
+        "wf1": 68.93,
+        "escalate_pct": 35.8
+      },
+      "three_state_best_le130": {
+        "tn": 0.75,
+        "te": 0.6,
+        "wf1": 68.901,
+        "escalate_pct": 27.6
+      },
+      "current_gate": {
+        "wf1": 69.572,
+        "trigger_pct": 26.5
+      }
+    },
+    {
+      "seed": "46",
+      "n": 2610,
+      "base_wf1": 68.826,
+      "base_acc": 69.31,
+      "error_split": {
+        "swallowed_emo_to_neu": 282,
+        "falsealarm_neu_to_emo": 209,
+        "emo_to_emo": 310,
+        "total": 801,
+        "boundary_pct": 61.3
+      },
+      "critic": {
+        "overall_acc": 68.05,
+        "on_swallowed": {
+          "subset": "swallowed",
+          "n": 282,
+          "critic_correct_pct": 17.4,
+          "critic_also_neutral_pct": 72.7
+        },
+        "on_falsealarm": {
+          "subset": "falsealarm",
+          "n": 209,
+          "critic_correct_pct": 34.4,
+          "critic_says_neutral_pct": 34.4
+        },
+        "on_emoconfusion": {
+          "subset": "emoconf",
+          "n": 310,
+          "critic_correct_pct": 16.1,
+          "critic_agrees_error_pct": 56.8
+        }
+      },
+      "swallowed_by_gold_class": {
+        "joyful": 80,
+        "sadness": 63,
+        "anger": 68,
+        "surprise": 35,
+        "disgust": 20,
+        "fear": 16
+      },
+      "veto_optimistic": {
+        "neu2emo_best": {
+          "th": 0.56,
+          "wf1": 69.364,
+          "flips": 70,
+          "delta": 0.538
+        },
+        "emo2neu_best": {
+          "th": 0.76,
+          "wf1": 69.135,
+          "flips": 28,
+          "delta": 0.309
+        }
+      },
+      "three_state_best": {
+        "tn": 0.9,
+        "te": 0.5,
+        "wf1": 68.983,
+        "escalate_pct": 28.4
+      },
+      "three_state_best_le130": {
+        "tn": 0.9,
+        "te": 0.5,
+        "wf1": 68.983,
+        "escalate_pct": 28.4
+      },
+      "current_gate": {
+        "wf1": 69.381,
+        "trigger_pct": 25.9
+      }
+    },
+    {
+      "seed": "47",
+      "n": 2610,
+      "base_wf1": 69.779,
+      "base_acc": 70.54,
+      "error_split": {
+        "swallowed_emo_to_neu": 290,
+        "falsealarm_neu_to_emo": 186,
+        "emo_to_emo": 293,
+        "total": 769,
+        "boundary_pct": 61.9
+      },
+      "critic": {
+        "overall_acc": 68.2,
+        "on_swallowed": {
+          "subset": "swallowed",
+          "n": 290,
+          "critic_correct_pct": 15.5,
+          "critic_also_neutral_pct": 73.8
+        },
+        "on_falsealarm": {
+          "subset": "falsealarm",
+          "n": 186,
+          "critic_correct_pct": 37.6,
+          "critic_says_neutral_pct": 37.6
+        },
+        "on_emoconfusion": {
+          "subset": "emoconf",
+          "n": 293,
+          "critic_correct_pct": 14.0,
+          "critic_agrees_error_pct": 56.3
+        }
+      },
+      "swallowed_by_gold_class": {
+        "joyful": 86,
+        "sadness": 68,
+        "anger": 68,
+        "surprise": 30,
+        "disgust": 23,
+        "fear": 15
+      },
+      "veto_optimistic": {
+        "neu2emo_best": {
+          "th": 0.73,
+          "wf1": 70.196,
+          "flips": 21,
+          "delta": 0.417
+        },
+        "emo2neu_best": {
+          "th": 0.79,
+          "wf1": 69.873,
+          "flips": 23,
+          "delta": 0.094
+        }
+      },
+      "three_state_best": {
+        "tn": 0.85,
+        "te": 0.5,
+        "wf1": 69.652,
+        "escalate_pct": 26.7
+      },
+      "three_state_best_le130": {
+        "tn": 0.85,
+        "te": 0.5,
+        "wf1": 69.652,
+        "escalate_pct": 26.7
+      },
+      "current_gate": {
+        "wf1": 69.684,
+        "trigger_pct": 27.2
+      }
+    },
+    {
+      "seed": "48",
+      "n": 2610,
+      "base_wf1": 68.349,
+      "base_acc": 68.97,
+      "error_split": {
+        "swallowed_emo_to_neu": 306,
+        "falsealarm_neu_to_emo": 209,
+        "emo_to_emo": 295,
+        "total": 810,
+        "boundary_pct": 63.6
+      },
+      "critic": {
+        "overall_acc": 68.28,
+        "on_swallowed": {
+          "subset": "swallowed",
+          "n": 306,
+          "critic_correct_pct": 16.7,
+          "critic_also_neutral_pct": 72.5
+        },
+        "on_falsealarm": {
+          "subset": "falsealarm",
+          "n": 209,
+          "critic_correct_pct": 42.6,
+          "critic_says_neutral_pct": 42.6
+        },
+        "on_emoconfusion": {
+          "subset": "emoconf",
+          "n": 295,
+          "critic_correct_pct": 18.0,
+          "critic_agrees_error_pct": 52.2
+        }
+      },
+      "swallowed_by_gold_class": {
+        "joyful": 91,
+        "sadness": 66,
+        "anger": 80,
+        "surprise": 31,
+        "disgust": 22,
+        "fear": 16
+      },
+      "veto_optimistic": {
+        "neu2emo_best": {
+          "th": 0.59,
+          "wf1": 68.951,
+          "flips": 72,
+          "delta": 0.602
+        },
+        "emo2neu_best": {
+          "th": 0.69,
+          "wf1": 68.808,
+          "flips": 59,
+          "delta": 0.459
+        }
+      },
+      "three_state_best": {
+        "tn": 0.55,
+        "te": 0.5,
+        "wf1": 68.91,
+        "escalate_pct": 15.9
+      },
+      "three_state_best_le130": {
+        "tn": 0.55,
+        "te": 0.5,
+        "wf1": 68.91,
+        "escalate_pct": 15.9
+      },
+      "current_gate": {
+        "wf1": 69.09,
+        "trigger_pct": 27.4
+      }
+    },
+    {
+      "seed": "49",
+      "n": 2610,
+      "base_wf1": 68.606,
+      "base_acc": 69.46,
+      "error_split": {
+        "swallowed_emo_to_neu": 318,
+        "falsealarm_neu_to_emo": 182,
+        "emo_to_emo": 297,
+        "total": 797,
+        "boundary_pct": 62.7
+      },
+      "critic": {
+        "overall_acc": 68.16,
+        "on_swallowed": {
+          "subset": "swallowed",
+          "n": 318,
+          "critic_correct_pct": 25.5,
+          "critic_also_neutral_pct": 61.9
+        },
+        "on_falsealarm": {
+          "subset": "falsealarm",
+          "n": 182,
+          "critic_correct_pct": 30.8,
+          "critic_says_neutral_pct": 30.8
+        },
+        "on_emoconfusion": {
+          "subset": "emoconf",
+          "n": 297,
+          "critic_correct_pct": 19.5,
+          "critic_agrees_error_pct": 58.9
+        }
+      },
+      "swallowed_by_gold_class": {
+        "joyful": 89,
+        "sadness": 71,
+        "anger": 81,
+        "surprise": 38,
+        "disgust": 22,
+        "fear": 17
+      },
+      "veto_optimistic": {
+        "neu2emo_best": {
+          "th": 0.55,
+          "wf1": 69.363,
+          "flips": 108,
+          "delta": 0.757
+        },
+        "emo2neu_best": {
+          "th": 0.7,
+          "wf1": 69.028,
+          "flips": 26,
+          "delta": 0.422
+        }
+      },
+      "three_state_best": {
+        "tn": 0.65,
+        "te": 0.55,
+        "wf1": 69.342,
+        "escalate_pct": 19.7
+      },
+      "three_state_best_le130": {
+        "tn": 0.65,
+        "te": 0.55,
+        "wf1": 69.342,
+        "escalate_pct": 19.7
+      },
+      "current_gate": {
+        "wf1": 69.253,
+        "trigger_pct": 24.8
+      }
+    }
+  ]
+}

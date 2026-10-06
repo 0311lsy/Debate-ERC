@@ -1,0 +1,84 @@
+{
+  "protocol": "frozen gate tau=0.65, margin=0.05; ours replayed from test_records",
+  "per_seed": [
+    {
+      "seed": 42,
+      "n": 2610,
+      "mcnemar_b_baseline_correct_only": 38,
+      "mcnemar_c_ours_correct_only": 64,
+      "mcnemar_exact_p": 0.0129,
+      "acc_delta_pp": 0.996
+    },
+    {
+      "seed": 43,
+      "n": 2610,
+      "mcnemar_b_baseline_correct_only": 60,
+      "mcnemar_c_ours_correct_only": 50,
+      "mcnemar_exact_p": 0.3909,
+      "acc_delta_pp": -0.383
+    },
+    {
+      "seed": 44,
+      "n": 2610,
+      "mcnemar_b_baseline_correct_only": 54,
+      "mcnemar_c_ours_correct_only": 81,
+      "mcnemar_exact_p": 0.0249,
+      "acc_delta_pp": 1.034
+    },
+    {
+      "seed": 45,
+      "n": 2610,
+      "mcnemar_b_baseline_correct_only": 54,
+      "mcnemar_c_ours_correct_only": 65,
+      "mcnemar_exact_p": 0.3594,
+      "acc_delta_pp": 0.421
+    },
+    {
+      "seed": 46,
+      "n": 2610,
+      "mcnemar_b_baseline_correct_only": 51,
+      "mcnemar_c_ours_correct_only": 68,
+      "mcnemar_exact_p": 0.1421,
+      "acc_delta_pp": 0.651
+    },
+    {
+      "seed": 47,
+      "n": 2610,
+      "mcnemar_b_baseline_correct_only": 49,
+      "mcnemar_c_ours_correct_only": 51,
+      "mcnemar_exact_p": 0.9204,
+      "acc_delta_pp": 0.077
+    },
+    {
+      "seed": 48,
+      "n": 2610,
+      "mcnemar_b_baseline_correct_only": 54,
+      "mcnemar_c_ours_correct_only": 78,
+      "mcnemar_exact_p": 0.0449,
+      "acc_delta_pp": 0.92
+    },
+    {
+      "seed": 49,
+      "n": 2610,
+      "mcnemar_b_baseline_correct_only": 54,
+      "mcnemar_c_ours_correct_only": 68,
+      "mcnemar_exact_p": 0.2391,
+      "acc_delta_pp": 0.536
+    }
+  ],
+  "sign_test": {
+    "n_positive": 7,
+    "n": 8,
+    "exact_p_two_sided": 0.0703
+  },
+  "paired_t_on_acc_delta": 3.061,
+  "wilcoxon": {
+    "statistic": 2.0,
+    "p": 0.0234
+  },
+  "acc_delta_mean_sd": [
+    0.532,
+    0.491
+  ],
+  "note": "pooled McNemar across seeds is invalid (same 2610 utterances repeated); per-seed only."
+}

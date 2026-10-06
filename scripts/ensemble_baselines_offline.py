@@ -21,8 +21,10 @@ from debate_erc.utils.label_schema import MELD_SCHEMA
 L = list(MELD_SCHEMA.labels)
 ROOT = Path("outputs/selective_hetero")
 TAU, MARGIN = 0.65, 0.05
-SEED_DIRS = {"42": "qwen7b", "43": "qwen7b_s43_shared", "44": "qwen7b_s44_shared"}
-DEV_DIRS = {"42": "qwen7b", "43": "qwen7b_s43", "44": "qwen7b_s44"}
+SEED_DIRS = {"42": "qwen7b",
+             **{str(s): f"qwen7b_s{s}_shared" for s in range(43, 50)}}
+DEV_DIRS = {"42": "qwen7b", "43": "qwen7b_s43", "44": "qwen7b_s44",
+            **{str(s): f"qwen7b_s{s}_shared" for s in range(45, 50)}}
 
 
 def read_jsonl(p):

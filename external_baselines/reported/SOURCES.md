@@ -114,8 +114,11 @@
 - [ ] S8 SACL-LSTM 原始论文
 - [ ] S9 HiDialog 准确标题
 - [ ] S10 EmoTrans 作者 + ACL Anthology
-- [ ] S12 CKERC 完整书目信息
-- [ ] S13–S16 多模态四行完整书目信息
+- [ ] S12 CKERC 完整书目信息 —— **已于 2026-10-05 核实**：arXiv:2403.07260，Yumeng Fu，"CKERC: Joint Large Language Models with Commonsense Knowledge for ERC"；bib key `fu2024ckerc`，Table 2 已改为正式引用
+- [ ] S13–S16 多模态四行完整书目信息 —— 部分完成（2026-10-05）：
+  - **S15 ELR-GNN 已核实**：arXiv:2407.00119，Shou et al., JPDC 2024；bib key `shou2024elrgnn`
+  - **S16 BiosERC 已核实并更正分类**：arXiv:2407.04279，Xue/Nguyen/Matheny/Nguyen (JAIST)；其方法为 LLM 提取说话人"传记"文本知识注入，**非多模态**，已从多模态块移至文本知识增强（Generative LLM）块；bib key `xue2024bioserc`
+  - S13 TelME / S14 M2FNet 维持无引用 as-reported 行
 - [x] S17 DialogueLLM（arXiv:2310.11374v4 已核对）
 - [x] S11 InstructERC（arXiv:2309.11374 已核对）
 - [x] S18 PRC-Emo（AAAI OJS 40446 / arXiv:2511.07061v3 已核对）

@@ -27,6 +27,20 @@ IEMOCAP_LABEL_MAP: dict[str, str] = {
     "neutral": "neutral",
 }
 
+# EmoryNLP（EmotionLines / Friends，Zahiri & Choi 2018）官方 7 类，与 MELD 标签
+# 空间不同（peaceful/powerful/mad/scared），故不做跨数据集门控迁移，只做域内协议复现
+EMORYNLP_LABELS: tuple[str, ...] = (
+    "neutral", "joyful", "mad", "peaceful", "sad", "powerful", "scared",
+)
+EMORYNLP_OFFICIAL_COUNTS: dict[str, dict[str, int]] = {
+    "train": {"neutral": 2485, "joyful": 1677, "mad": 785, "peaceful": 638,
+              "sad": 474, "powerful": 551, "scared": 941},
+    "dev": {"neutral": 322, "joyful": 205, "mad": 97, "peaceful": 82,
+            "sad": 51, "powerful": 70, "scared": 127},
+    "test": {"neutral": 288, "joyful": 217, "mad": 86, "peaceful": 111,
+             "sad": 70, "powerful": 96, "scared": 116},
+}
+
 # MELD 官方类目数（train/dev/test），用于 tests/test_data_official_counts.py 逐项核对
 MELD_OFFICIAL_COUNTS: dict[str, dict[str, int]] = {
     "train": {
@@ -64,8 +78,14 @@ class LabelSchema:
 
 MELD_SCHEMA = LabelSchema(MELD_LABELS, "meld")
 IEMOCAP_SCHEMA = LabelSchema(IEMOCAP_LABELS, "iemocap")
+EMORYNLP_SCHEMA = LabelSchema(EMORYNLP_LABELS, "emorynlp")
 
-_SCHEMAS: dict[str, LabelSchema] = {"meld": MELD_SCHEMA, "iemocap": IEMOCAP_SCHEMA, "dailydialog": MELD_SCHEMA}
+_SCHEMAS: dict[str, LabelSchema] = {
+    "meld": MELD_SCHEMA,
+    "iemocap": IEMOCAP_SCHEMA,
+    "emorynlp": EMORYNLP_SCHEMA,
+    "dailydialog": MELD_SCHEMA,
+}
 
 
 def get_schema(name: str) -> LabelSchema:

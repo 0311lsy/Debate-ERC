@@ -1,0 +1,42 @@
+{
+  "gpu": "NVIDIA RTX PRO 5000 Blackwell",
+  "n_measured": 400,
+  "tau": 0.65,
+  "measured_trigger_rate": 0.27,
+  "primary_llama2_7b": {
+    "mean_ms": 316.5,
+    "p50_ms": 320.4,
+    "p95_ms": 378.1,
+    "throughput_utt_s": 3.16
+  },
+  "critic_qwen25_7b_triggered_only": {
+    "mean_ms": 380.7,
+    "p50_ms": 388.9,
+    "p95_ms": 428.4,
+    "throughput_utt_s": 2.63
+  },
+  "system_primary_only": {
+    "mean_ms": 316.5,
+    "p50_ms": 320.4,
+    "p95_ms": 378.1,
+    "throughput_utt_s": 3.16
+  },
+  "system_gated": {
+    "mean_ms": 419.3,
+    "p50_ms": 330.4,
+    "p95_ms": 756.7,
+    "throughput_utt_s": 2.38
+  },
+  "system_full_review_2x_mean_imputed": {
+    "mean_ms": 697.2,
+    "p50_ms": 700.0,
+    "p95_ms": 769.3,
+    "throughput_utt_s": 1.43
+  },
+  "wallclock_ratio_critic_over_primary": 1.203,
+  "gated_wallclock_over_primary_empirical": 1.325,
+  "forward_cost_ratio_note": "前向口径 1+trigger=1.265；墙钟口径见上，受双模型切换/批内序列长度影响",
+  "peak_mem_one_model_gb": 13.57,
+  "peak_mem_both_resident_gb": 28.33,
+  "dtype_note": "bf16 权重 + LoRA，batch=1 在线单流，generate 8 贪心 token + 7 标签打分"
+}

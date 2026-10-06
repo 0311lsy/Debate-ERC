@@ -1,0 +1,81 @@
+{
+  "dataset": "EmoryNLP",
+  "n_seeds": 3,
+  "per_seed": [
+    {
+      "seed": 42,
+      "prop_wf1": 40.44,
+      "gated_wf1": 40.17,
+      "delta_wf1": -0.27,
+      "delta_macro": -0.72,
+      "prop_acc": 45.73,
+      "gated_acc": 45.33,
+      "delta_acc": -0.41,
+      "critic_wf1": 39.29,
+      "trigger_pct": 68.0,
+      "flip_correct": 26,
+      "flip_wrong": 30,
+      "tau": 0.7,
+      "margin": 0.0
+    },
+    {
+      "seed": 43,
+      "prop_wf1": 39.84,
+      "gated_wf1": 40.78,
+      "delta_wf1": 0.94,
+      "delta_macro": 0.58,
+      "prop_acc": 44.21,
+      "gated_acc": 45.53,
+      "delta_acc": 1.32,
+      "critic_wf1": 39.81,
+      "trigger_pct": 52.4,
+      "flip_correct": 29,
+      "flip_wrong": 16,
+      "tau": 0.6,
+      "margin": 0.1
+    },
+    {
+      "seed": 44,
+      "prop_wf1": 41.01,
+      "gated_wf1": 41.3,
+      "delta_wf1": 0.29,
+      "delta_macro": 0.19,
+      "prop_acc": 45.53,
+      "gated_acc": 46.24,
+      "delta_acc": 0.71,
+      "critic_wf1": 40.84,
+      "trigger_pct": 35.6,
+      "flip_correct": 37,
+      "flip_wrong": 30,
+      "tau": 0.5,
+      "margin": 0.0
+    }
+  ],
+  "wf1_prop_mean_sd": [
+    40.43,
+    0.585
+  ],
+  "wf1_gated_mean_sd": [
+    40.75,
+    0.566
+  ],
+  "delta_wf1_mean_sd": [
+    0.32,
+    0.606
+  ],
+  "delta_macro_mean_sd": [
+    0.017,
+    0.667
+  ],
+  "delta_acc_mean_sd": [
+    0.54,
+    0.877
+  ],
+  "paired_t": 0.915,
+  "df": 2,
+  "paired_p_two_sided": 0.4567,
+  "n_positive": 2,
+  "trigger_pct_mean": 52.0,
+  "critic_wf1_mean": 39.98,
+  "protocol": "per-seed dev calibration (tau,margin), frozen before test"
+}
