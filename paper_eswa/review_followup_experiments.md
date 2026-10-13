@@ -383,3 +383,14 @@ with Sequence-Based Convolutional Neural Networks", AffCon Workshop @ AAAI-32
 （EmoryNLP emotion-detection 发布版；7 标签 neutral/joyful/peaceful/powerful/
 mad/sad/scared 与 pkl 一致）。**勿与 Chen et al. 2018 EmotionLines (LREC,
 arXiv:1802.08379) 混淆**——Friends 语料同源但论文不同。bib 写 Zahiri2018。
+
+## 2026-10-13 补充（豆包方案核实 + E1/E7 新实验）
+
+- **队列事故**：EmoryNLP 5 种子队列 10-06 11:38 被杀（s48 primary SFT step~200，s49 未开始），GPU 此后空闲一周。已重启 s48/s49 补齐队列（scripts/emorynlp_s48_s49_queue.sh），完成后 8 种子口径齐全。
+- **records 覆盖教训（重要）**：s42-44 的 test_records.jsonl 只含各自 dev-τ（0.7/0.5/0.6）以下的 critic 提案，[τ_dev,0.65) 区间缺失；任何"冻结 0.65/0.05 统一重放"必须用 aggregate_8seeds_uniform.json（原始全量数据，pooled R/H=525/414, net=+111），不能直接重放当前 records（会得 494/384 的漏计值）。els-cas 稿件 525/414 口径正确，未改动。
+- **E1 零成本启发式路由基线**（scripts/e1_heuristic_routing_baselines.py → outputs/review_followups/e1_heuristic_routing.json）：触发桶内多数类替换 −5.66±0.52、随机替换 −6.28±0.45（均 0/8 正，p<0.001）；门控 +0.48。已写入 §5.2 文字+消融表两行。
+- **E7 净收益敏感性**（scripts/e7_net_benefit_sensitivity.py → e7_net_benefit_sensitivity.json + fig_net_benefit.pdf）：权威口径 r=0.168, h=0.172, e=0.5653, φ=0.2648, net 531.6/1e5；代价不对称盈亏平衡 e*(λ)=λh/(r+λh)：λ=0.5/1/2/5 → 0.34/0.51/0.67/0.84；实测工作点 λ≤1.27 内净正。λ 段落已写入部署节。
+- **F4 nohint 升 8 种子**（f4_nohint_8seed.json）：+0.62±0.45（7/8 正，t=3.85 p=0.006），配对 vs hint +0.14（p_t=0.25, p_wil=0.25）不显著 → 主表配置保留。hint 段落+消融表已更新。
+- **F3① InstructERC 3-critic 平台**（exp1_instructerc_3seeds.json 核实）：R2 双阈值 Δ=+2.31/+2.12/+1.64（mean +2.02±0.35），触发 30–35%，R/H 127/68、120/72、147/102。摘要/§5.3/结论已从 +1.33 升级为区间+winner's-curse 提示。
+- **F3② τ×m 网格**（exp3_margin_sensitivity.json 核实）：5τ×5m=25 格全正（min +0.28 max +0.68，行内极差 ≤0.21——方案声称 ≤0.16 有误，以实测为准）。已写入消融小结。
+- els-cas-templates/main.tex 全部改动编译通过（tectonic，0 undefined）。

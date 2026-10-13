@@ -1,0 +1,132 @@
+{
+ "protocol": "frozen gate tau=0.65, margin=0.05; heuristics replace critic proposal unconditionally in the triggered bucket (best case for heuristic)",
+ "per_seed": [
+  {
+   "seed": 42,
+   "n": 2610,
+   "n_triggered": 685,
+   "trigger_rate": 0.2625,
+   "primary": 68.6,
+   "gated": 69.63,
+   "neutral_replace": 62.11,
+   "random_replace": 61.79
+  },
+  {
+   "seed": 43,
+   "n": 2610,
+   "n_triggered": 678,
+   "trigger_rate": 0.2598,
+   "primary": 68.97,
+   "gated": 68.85,
+   "neutral_replace": 63.3,
+   "random_replace": 63.0
+  },
+  {
+   "seed": 44,
+   "n": 2610,
+   "n_triggered": 725,
+   "trigger_rate": 0.2778,
+   "primary": 68.76,
+   "gated": 69.42,
+   "neutral_replace": 63.1,
+   "random_replace": 62.26
+  },
+  {
+   "seed": 45,
+   "n": 2610,
+   "n_triggered": 691,
+   "trigger_rate": 0.2648,
+   "primary": 69.14,
+   "gated": 69.57,
+   "neutral_replace": 63.41,
+   "random_replace": 62.33
+  },
+  {
+   "seed": 46,
+   "n": 2610,
+   "n_triggered": 675,
+   "trigger_rate": 0.2586,
+   "primary": 68.83,
+   "gated": 69.38,
+   "neutral_replace": 64.11,
+   "random_replace": 62.91
+  },
+  {
+   "seed": 47,
+   "n": 2610,
+   "n_triggered": 711,
+   "trigger_rate": 0.2724,
+   "primary": 69.78,
+   "gated": 69.68,
+   "neutral_replace": 63.66,
+   "random_replace": 63.16
+  },
+  {
+   "seed": 48,
+   "n": 2610,
+   "n_triggered": 716,
+   "trigger_rate": 0.2743,
+   "primary": 68.35,
+   "gated": 69.09,
+   "neutral_replace": 62.89,
+   "random_replace": 62.66
+  },
+  {
+   "seed": 49,
+   "n": 2610,
+   "n_triggered": 647,
+   "trigger_rate": 0.2479,
+   "primary": 68.61,
+   "gated": 69.25,
+   "neutral_replace": 63.21,
+   "random_replace": 62.68
+  }
+ ],
+ "summary": {
+  "gated": {
+   "delta_vs_primary": {
+    "mean": 0.48,
+    "sd": 0.4,
+    "pos": 6,
+    "paired_t": 3.367,
+    "p": 0.012
+   },
+   "wf1": {
+    "mean": 69.36,
+    "sd": 0.28
+   }
+  },
+  "neutral_replace": {
+   "delta_vs_primary": {
+    "mean": -5.66,
+    "sd": 0.52,
+    "pos": 0,
+    "paired_t": -30.735,
+    "p": 0.0
+   },
+   "wf1": {
+    "mean": 63.22,
+    "sd": 0.58
+   }
+  },
+  "random_replace": {
+   "delta_vs_primary": {
+    "mean": -6.28,
+    "sd": 0.45,
+    "pos": 0,
+    "paired_t": -39.416,
+    "p": 0.0
+   },
+   "wf1": {
+    "mean": 62.6,
+    "sd": 0.45
+   }
+  },
+  "primary": {
+   "wf1": {
+    "mean": 68.88,
+    "sd": 0.44
+   }
+  }
+ }
+}
